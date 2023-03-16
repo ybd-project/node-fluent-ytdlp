@@ -1,9 +1,8 @@
 # 日本語版
 
-このAPIは、[fluent-ffmpeg](https://www.npmjs.com/package/fluent-ffmpeg)を参考に作成されました。
+このプロジェクトは、[fluent-ffmpeg](https://www.npmjs.com/package/fluent-ffmpeg)を参考に作成されました。
 
 ## 目次
-
 - [動作確認に関して](#動作確認に関して)
     - [Nodejs](#nodejs)
     - [OS](#os)
@@ -30,10 +29,10 @@
 ## 簡単な説明・注意
 
 ### 説明
-このAPIは、yt-dlpをNode.jsで利用できるようにするAPIです。yt-dlpは、このモジュールによって自動でダウンロードされるため、デバイスへのインストールは必要ありません。
+このプロジェクトは、yt-dlpをNode.jsで利用できるようにするAPIです。yt-dlpは、このAPIによって自動でダウンロードされるため、デバイスへのインストールは必要ありません。
 
 ### 注意
-**1. 自己責任での利用をお願いします。このモジュールの利用によって発生した損害・損失等に関して開発者は一切の責任を取りません。**<br>
+**1. 自己責任での利用をお願いします。このプロジェクトの利用によって発生した損害・損失等に関して開発者は一切の責任を取りません。**<br>
 **2. このAPIは、Node.jsでの実行を目的としたものであり、ブラウザ等のNode.js以外の環境での動作は保証できません。**
 
 ## 導入
@@ -57,14 +56,12 @@ yarn add fluent-ytdlp
 
 ### モジュールの読み込みとURLの指定
 
-このAPIは、
-
 ```js
 const fluentYTDlp = require('fluent-ytdlp'); //モジュールの読み込み
 const ytdlp = new fluentYTDlp('<URL>');
 ```
 
-### オプションの指定なし
+### yt-dlpオプションの指定なし
 
 ```js
 const ytdlpProcess = ytdlp.exec(); //yt-dlpの実行
@@ -74,7 +71,7 @@ ytdlpProcess.stderr.on('data', () => {/* ffmpegの標準エラー出力 */});
 ytdlpProcess.on('close', () => {/* した場合の処理 */});
 ```
 
-### オプションの指定あり（解像度の指定）
+### yt-dlpオプションの指定あり（解像度の指定）
 
 ```js
 const ytdlpProcess = ytdlp.resolution('1920x1080').exec(); //yt-dlpの実行
@@ -327,3 +324,6 @@ ytdlp.alias('alias').exec();
 ```
 
 ### ネットワークオプション
+
+## ライセンス
+このプロジェクトは、MITライセンスで公開されています。詳細はLICENSEファイルをご覧ください。
