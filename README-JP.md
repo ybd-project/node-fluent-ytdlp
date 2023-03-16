@@ -1,6 +1,11 @@
-# 日本語版
+<div align="center">
+
+# Node.js用のyt-dlp API - fluent-ytdlp
+
+**Node.jsで簡単にyt-dlpを実行します。独自のコードを作成する必要はありません。**
 
 このプロジェクトは、[fluent-ffmpeg](https://www.npmjs.com/package/fluent-ffmpeg)を参考に作成されました。
+</div>
 
 ## 目次
 - [動作確認に関して](#動作確認に関して)
@@ -99,9 +104,13 @@ console.log(ytdlpProcess); //yt-dlpの実行結果の表示
 
 **注意: yt-dlpで非推奨になったオプション等は`otherOptions()`で指定することが可能ですが、動作については保証できません。**
 
+---
+
 ### yt-dlpのメタ情報に関するオプション
 
-#### ヘルプの取得
+---
+
+### ヘルプの取得
 yt-dlpの`--help`オプションを使用することで表示される情報を返します。この情報に改行を含ませない場合は、引数に`true`を指定します。<br>
 改行を含ませる場合は、`false`を指定するか何も指定しないでください。
 
@@ -116,7 +125,9 @@ ytdlp.help(false);
 ytdlp.help(true);
 ```
 
-#### バージョンの取得
+---
+
+### バージョンの取得
 yt-dlpの`--version`で取得されるバージョンを返します。
 
 **関数名**: `version()`
@@ -125,7 +136,9 @@ yt-dlpの`--version`で取得されるバージョンを返します。
 ytdlp.version();
 ```
 
-#### yt-dlpのアップデート
+---
+
+### yt-dlpのアップデート
 yt-dlpの`--update`を実行します。アップデートが完了しているかの確認は`_updateCompleted()`を実行します。
 
 **関数名**: `update()`
@@ -134,7 +147,7 @@ yt-dlpの`--update`を実行します。アップデートが完了している�
 ytdlp.update();
 ```
 
-##### _updateCompleted
+#### _updateCompleted
 アップデートが完了している場合は`true`を返し、その他の場合は、`false`を返します。
 
 **関数名**: `_updateCompleted()`
@@ -143,7 +156,9 @@ ytdlp.update();
 ytdlp._updateCompleted();
 ```
 
-#### yt-dlpパスの取得
+---
+
+### yt-dlpパスの取得
 このAPIが、内部で使用するyt-dlpのパスを返します。
 
 **関数名**: `_ytdlpPath()`
@@ -152,7 +167,9 @@ ytdlp._updateCompleted();
 ytdlp._ytdlpPath();
 ```
 
-#### その他パスの取得
+---
+
+### その他パスの取得
 このAPIが、内部で使用するffmpeg等をダウンロードするbinディレクトリパスを返します。
 
 **関数名**: `_binPath()`
@@ -161,9 +178,13 @@ ytdlp._ytdlpPath();
 ytdlp._binPath();
 ```
 
+---
+
 ### 基本オプション
 
-#### URLの変更
+---
+
+### URLの変更
 URLを途中で変更することができます。このオプションは複数回指定することができ、一番最後に指定されたオプションが適応されます。
 
 **関数名**: `url()`
@@ -172,7 +193,9 @@ URLを途中で変更することができます。このオプションは複�
 ytdlp.url('<URL>').exec();
 ```
 
-#### ダウンロードエラーの無視
+---
+
+### ダウンロードエラーの無視
 yt-dlpによるダウンロードプロセスが、エラー等で失敗したとしても成功とみなすようにします。
 
 **関数名**: `ignoreErrors()`
@@ -181,7 +204,9 @@ yt-dlpによるダウンロードプロセスが、エラー等で失敗した�
 ytdlp.ignoreErrors().exec();
 ```
 
-#### userAgentの取得
+---
+
+### userAgentの取得
 userAgentを取得できます。このオプションを指定するとその他のオプションを指定できなくなり、動画のダウンロードは実行されません。
 
 **関数名**: `dumpUserAgent()`
@@ -190,7 +215,9 @@ userAgentを取得できます。このオプションを指定するとその�
 ytdlp.dumpUserAgent().exec();
 ```
 
-#### extractor一覧の取得
+---
+
+### extractor一覧の取得
 extractorの一覧を配列で取得できます。このオプションを指定するとその他のオプションを指定できなくなり、動画のダウンロードは実行されません。
 
 **関数名**: `listExtractors()`
@@ -199,7 +226,9 @@ extractorの一覧を配列で取得できます。このオプションを指�
 ytdlp.listExtractors().exec();
 ```
 
-#### extractor一覧を説明付きで取得
+---
+
+### extractor一覧を説明付きで取得
 extractorの一覧と説明を配列で取得できます。このオプションを指定するとその他のオプションを指定できなくなり、動画のダウンロードは実行されません。
 
 **関数名**: `extractorDescriptions()`
@@ -208,7 +237,9 @@ extractorの一覧と説明を配列で取得できます。このオプショ�
 ytdlp.extractorDescriptions().exec();
 ```
 
-#### 使用するextractorの指定
+---
+
+### 使用するextractorの指定
 ダウンロード等に使用するextractorを指定します。このオプションには、何かしらの値を指定する必要があります。
 
 **関数名**: `useExtractors()`
@@ -217,7 +248,9 @@ ytdlp.extractorDescriptions().exec();
 ytdlp.useExtractors('Extractor Name').exec();
 ```
 
-#### URLではない値をURLとして指定された場合の処理の指定
+---
+
+### URLではない値をURLとして指定された場合の処理の指定
 URLではない値を、URLとして与えられた場合の処理を指定できます。このオプションには、何かしらの値を指定する必要があります。
 
 **関数名**: `defaultSearch()`
@@ -226,7 +259,9 @@ URLではない値を、URLとして与えられた場合の処理を指定で�
 ytdlp.defaultSearch('Method').exec();
 ```
 
-#### 設定ファイルまたは、フォルダパスの指定
+---
+
+### 設定ファイルまたは、フォルダパスの指定
 設定ファイルのパス、フォルダのパスを指定できます。このオプションには、何かしらの値を指定する必要があります。この設定ファイルのみを適応する場合は、[設定ファイルを限定する](#設定ファイルを限定する)をご覧ください。
 
 **関数名**: `configLocation()`
@@ -235,7 +270,9 @@ ytdlp.defaultSearch('Method').exec();
 ytdlp.configLocation('PATH').exec();
 ```
 
-#### 設定ファイルの限定
+---
+
+### 設定ファイルの限定
 `configLocation('PATH')`を使用して指定した設定ファイル以外を適応しない場合は、`ignoreConfig()`または`noConfig()`を使用してください。<br>
 
 **関数名**: `ignoreConfig()`、`noConfig()`
@@ -245,7 +282,9 @@ ytdlp.ignoreConfig().exec();
 ytdlp.noConfig().exec();
 ```
 
-#### 全ての設定ファイルの無視
+---
+
+### 全ての設定ファイルの無視
 どのようなオプションで設定ファイルを指定されてもその設定ファイルを無視します。このオプションを指定するとその他の設定ファイルに関するオプションが指定できなくなります。
 
 **関数名**: `noConfigLocations()`
@@ -254,7 +293,9 @@ ytdlp.noConfig().exec();
 ytdlp.noConfigLocations().exec();
 ```
 
-#### プレイリスト展開
+---
+
+### プレイリスト展開
 プレイリストの展開をするかを指定できます。
 
 **関数名**: `flatPlaylist()`, `noFlatPlaylist()`
@@ -264,7 +305,9 @@ ytdlp.flatPlaylist().exec();
 ytdlp.noFlatPlaylist().exec();
 ```
 
-#### ライブのダウンロード開始を放送開始時にする - ~実験的~
+---
+
+### ライブのダウンロード開始を放送開始時にする - ~実験的~
 YouTubeのライブを放送開始時からにするかを指定できます。
 
 **関数名**: `liveFromStart()`, `noLiveFromStart()`
@@ -274,7 +317,9 @@ ytdlp.liveFromStart().exec();
 ytdlp.noLiveFromStart().exec();
 ```
 
-#### ライブの予約ダウンロード待機中の再試行間隔の指定
+---
+
+### ライブの予約ダウンロード待機中の再試行間隔の指定
 ライブの予約ダウンロードの待機中の再試行間隔を指定できます。指定する場合は、**秒数**を指定してください。
 
 **関数名**: `waitForVideo()`, `noWaitForVideo()`
@@ -284,7 +329,9 @@ ytdlp.waitForVideo().exec();
 ytdlp.noWaitForVideo().exec();
 ```
 
-#### 再生履歴の追加
+---
+
+### 再生履歴の追加
 再生履歴を残すことができます。このオプションはユーザー名・パスワードを指定しないと動作しません。
 
 **関数名**: `markWatched()`, `noMarkWatched()`
@@ -294,7 +341,9 @@ ytdlp.markWatched().exec();
 ytdlp.noMarkWatched().exec();
 ```
 
-#### 出力にカラーコードを生成しない
+---
+
+### 出力にカラーコードを生成しない
 このオプションを指定すると標準出力にカラーコードを生成しなくなります。
 
 **関数名**: `noColor()`
@@ -303,7 +352,9 @@ ytdlp.noMarkWatched().exec();
 ytdlp.noColor().exec();
 ```
 
-#### 各オプションの動作の違いの修正
+---
+
+### 各オプションの動作の違いの修正
 各オプションのデフォルト動作の違いを元に戻すことができます。
 
 **関数名**: `compatOptions()`
@@ -312,7 +363,9 @@ ytdlp.noColor().exec();
 ytdlp.compatOptions().exec();
 ```
 
-#### ~~オプションエイリアスの作成~~ - 利用できません。
+***
+
+### ~~オプションエイリアスの作成~~ - 利用できません。
 **注意:  正常に動作しない可能性があるため利用できません。改善策が見つかり次第、利用を可能にします。**
 
 オプション文字列のエイリアスを作成できます。エイリアスの引数はPythonの文字列フォーマットにしたがってパースされます。
@@ -323,7 +376,11 @@ ytdlp.compatOptions().exec();
 ytdlp.alias('alias').exec();
 ```
 
+---
+
 ### ネットワークオプション
+
+---
 
 ## ライセンス
 このプロジェクトは、MITライセンスで公開されています。詳細はLICENSEファイルをご覧ください。
