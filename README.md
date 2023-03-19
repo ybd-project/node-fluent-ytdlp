@@ -88,13 +88,22 @@ ytdlpProcess.stderr.on('data', () => {/* ffmpegの標準エラー出力 */});
 ytdlpProcess.on('close', () => {/* した場合の処理 */});
 ```
 
+## 応用的な使用方法
+
+複数のオプションを指定してyt-dlpを実行したい場合は以下のように記述します。
+
+### 複数のオプション指定
+
+```js
+ytdlp.resolution('1920x1080').filename('Test').format('bestvideo+bestaudio[ext=m4a]').exec();
+```
+
 ## オプション説明
 
 ### オプションに関する情報
 
-#### オプション名の規則に関して
-オプションの関数名は、全てyt-dlpでも同じオプション名となっています。<br>
-**注意: 全ての関数名が同じとは限らず、例外として「アンダーバーがつく関数・exec関数・noStream関数・url関数」は独自オプション・関数をなります。**
+#### オプション名に関して
+ここに記載されているオプションは、全てyt-dlpと同じ名前となります。その他、このAPIを簡単に利用するための簡易オプション等は独自命名となります。
 
 #### オプション関数の引数に関して
 関数に引数を渡す場合は、**文字列（String型）・数字（Number型）・真偽（Boolean型）・正規表現（RegExp型）・日付（Date型）のいずれかを指定**する必要があります。<br>
@@ -145,7 +154,108 @@ ytdlp.noStream().exec();
 
 ---
 
+### 簡易オプション
+
+---
+
+このセクションでは、このAPIを簡単に利用するためのオプション等を紹介します。細かにオプションを指定する必要がある場合はこの簡易オプションを使用しないでください。
+
+---
+
+### 解像度の指定
+解像度を指定できます。「横×縦」で指定することができます。このオプションには、何かしらの値を指定する必要があります。
+
+**関数名**: `resolution()`
+
+**引数の型**: `String型`
+
+```js
+ytdlp.resolution('1920x1080').exec();
+```
+
+縦と横を個別で指定する必要がある場合は以下のオプションを使用してください。このオプションには、何かしらの値を指定する必要があります。
+
+**関数名**: `width()`、`height()`
+
+**引数の型**: `String型`、`Number型`
+
+```js
+ytdlp.width('1920').exec(); //横の指定
+ytdlp.height('1080').exec(); //縦の指定
+```
+
+---
+
+### ファイル名の指定
+ダウンロード後のファイル名を指定できます。（拡張子の指定は、[`extension()`](#ファイル拡張子の指定)を使用してください。）このオプションには、何かしらの値を指定する必要があります。
+
+**関数名**: `filename()`
+
+**引数の型**: `String型`
+
+```js
+ytdlp.filename('Name').exec();
+```
+
+---
+
+### ファイル拡張子の指定
+ダウンロード後のファイル拡張子を指定できます。この拡張子はyt-dlpで利用できる拡張子を指定してください。このオプションには、何かしらの値を指定する必要があります。
+
+**関数名**: `extension()`
+
+**引数の型**: `String型`
+
+```js
+ytdlp.extension('Ext').exec();
+```
+
+---
+
+### その他のオプション
+
+---
+
+### URLの変更
+URLを途中で変更することができます。このオプションは複数回指定することができ、一番最後に指定されたオプションが適応されます。このオプションには、何かしらのURLを指定する必要があります。
+
+**関数名**: `url()`
+
+**引数の型**: `String型`
+
+```js
+ytdlp.url('URL').exec();
+```
+
+---
+
+### yt-dlpパスの取得
+このAPIが、内部で使用するyt-dlpのパスを返します。
+
+**関数名**: `_ytdlpPath()`
+
+```js
+ytdlp._ytdlpPath();
+```
+
+---
+
+### その他パスの取得
+このAPIが、内部で使用するffmpeg等をダウンロードするbinディレクトリパスを返します。
+
+**関数名**: `_binPath()`
+
+```js
+ytdlp._binPath();
+```
+
+---
+
 ### yt-dlpに関するオプション
+
+---
+
+ここからはオプションの値を細かく指定できます。yt-dlpを使用したことがないユーザーは[簡易オプション](#簡易オプション)を使用するか、公式ドキュメントを見てからオプションを使用することをおすすめします。
 
 ---
 
@@ -157,7 +267,7 @@ yt-dlpの`--help`オプションを使用することで表示される情報を
 
 **引数の型**: `Boolean型`
 
-**yt-dlpのオプション**: `-h`、`--help`
+**yt-dlpのオプション**: `-h`・`--help`
 
 ```js
 /* 改行あり */
@@ -190,7 +300,7 @@ yt-dlpをアップデートします。アップデートが完了している�
 
 **関数名**: `update()`、`noUpdate()`
 
-**yt-dlpのオプション**: `-U`、`--update`、`--no-update`
+**yt-dlpのオプション**: `-U`・`--update`、`--no-update`
 
 ```js
 ytdlp.update(); //バージョンを指定しない
@@ -223,42 +333,7 @@ ytdlp.updateTo('Version').exec();
 
 ---
 
-### yt-dlpパスの取得
-このAPIが、内部で使用するyt-dlpのパスを返します。
-
-**関数名**: `_ytdlpPath()`
-
-```js
-ytdlp._ytdlpPath();
-```
-
----
-
-### その他パスの取得
-このAPIが、内部で使用するffmpeg等をダウンロードするbinディレクトリパスを返します。
-
-**関数名**: `_binPath()`
-
-```js
-ytdlp._binPath();
-```
-
----
-
-### 基本オプション
-
----
-
-### URLの変更
-URLを途中で変更することができます。このオプションは複数回指定することができ、一番最後に指定されたオプションが適応されます。このオプションには、何かしらのURLを指定する必要があります。
-
-**関数名**: `url()`
-
-**引数の型**: `String型`
-
-```js
-ytdlp.url('URL').exec();
-```
+### 一般オプション - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#general-options)
 
 ---
 
@@ -267,7 +342,7 @@ yt-dlpによるダウンロードプロセスが、エラー等で失敗した�
 
 **関数名**: `ignoreErrors()`
 
-**yt-dlpのオプション**: `-i`、`--ignore-errors`
+**yt-dlpのオプション**: `-i`・`--ignore-errors`
 
 ```js
 ytdlp.ignoreErrors().exec();
@@ -280,7 +355,7 @@ ytdlp.ignoreErrors().exec();
 
 **関数名**: `abortOnError()`、`noIgnoreErrors()`、`noAbortOnError()`
 
-**yt-dlpのオプション**: `--abort-on-error`、`--no-ignore-errors`、`--no-abort-on-error`
+**yt-dlpのオプション**: `--abort-on-error`・`--no-ignore-errors`・`--no-abort-on-error`
 
 ```js
 /* 処理を中止する */
@@ -382,7 +457,7 @@ ytdlp.configLocation('PATH').exec();
 
 **関数名**: `ignoreConfig()`、`noConfig()`
 
-**yt-dlpのオプション**: `--ignore-config`、`--no-config`
+**yt-dlpのオプション**: `--ignore-config`・`--no-config`
 
 ```js
 ytdlp.ignoreConfig().exec();
@@ -418,7 +493,7 @@ ytdlp.noFlatPlaylist().exec(); //プレイリスト展開をしない
 
 ---
 
-### ライブのダウンロード開始を放送開始時にする - ~実験的~
+### ライブのダウンロード開始を放送開始時にする - <div style="background: #6d7034;display: inline;">==実験的==</div>
 YouTubeのライブを放送開始時からダウンロードするかを指定できます。
 
 **関数名**: `liveFromStart()`, `noLiveFromStart()`
@@ -505,7 +580,7 @@ ytdlp.alias('Alias').exec();
 
 ---
 
-### ネットワークオプション
+### ネットワークオプション - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#network-options)
 
 ---
 
@@ -560,7 +635,7 @@ IPv4の使用を強制できます。
 
 **関数名**: `forceIpv4()`
 
-**yt-dlpのオプション**: `-4`、`--force-ipv4`
+**yt-dlpのオプション**: `-4`・`--force-ipv4`
 
 ```js
 ytdlp.forceIpv4().exec();
@@ -573,7 +648,7 @@ IPv6の使用を強制できます。
 
 **関数名**: `forceIpv6()`
 
-**yt-dlpのオプション**: `-6`、`--force-ipv6`
+**yt-dlpのオプション**: `-6`・`--force-ipv6`
 
 ```js
 ytdlp.forceIpv6().exec();
@@ -594,7 +669,7 @@ ytdlp.enableFileUrls().exec();
 
 ---
 
-### 地域制限
+### 地域制限 - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#geo-restriction)
 
 ---
 
@@ -657,7 +732,7 @@ ytdlp.geoBypassIpBlock('IP BLOCK').exec();
 
 ---
 
-### 動画選択
+### 動画選択 - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#video-selection)
 
 ---
 
@@ -668,7 +743,7 @@ ytdlp.geoBypassIpBlock('IP BLOCK').exec();
 
 **引数の型**: `String型`、`Number型`
 
-**yt-dlpのオプション**: `-I`、`--playlist-items`
+**yt-dlpのオプション**: `-I`・`--playlist-items`
 
 ```js
 ytdlp.playlistItems('Index').exec();
@@ -825,14 +900,14 @@ ytdlp.ageLimit('Years').exec();
 ---
 
 ### 動画IDの記録
-ダウンロードした動画IDを記録し、記録された動画は二回目以降ダウンロードをスキップします。このオプションには、何かしらの値を指定する必要があります。
+ダウンロードした動画IDを記録し、記録された動画は二回目以降ダウンロードをスキップします。`downloadArchive()`を使用する場合、何かしらの値を指定する必要があります。
 
 **関数名**: `downloadArchive()`、`noDownloadArchive()`
 
 **yt-dlpのオプション**: `--download-archive`、`--no-download-archive`
 
 ```js
-ytdlp.downloadArchive().exec(); //動画IDを記録する
+ytdlp.downloadArchive('File').exec(); //動画IDを記録する
 ytdlp.noDownloadArchive().exec(); //動画IDを記録しない（yt-dlpのデフォルト）
 ```
 
@@ -880,7 +955,7 @@ ytdlp.skipPlaylistAfterErrors('Number').exec();
 
 ---
 
-### ダウンロードオプション
+### ダウンロードオプション - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#download-options)
 
 ---
 
@@ -891,7 +966,7 @@ DASHまたはhls動画の同時にダウンロードするフラグメント数�
 
 **引数の型**: `String型`、`Number型`
 
-**yt-dlpのオプション**: `-N`、`--concurrent-fragments`
+**yt-dlpのオプション**: `-N`・`--concurrent-fragments`
 
 ```js
 ytdlp.concurrentFragments('Number').exec();
@@ -906,7 +981,7 @@ ytdlp.concurrentFragments('Number').exec();
 
 **引数の型**: `String型`
 
-**yt-dlpのオプション**: `-r`、`--limit-rate`
+**yt-dlpのオプション**: `-r`・`--limit-rate`
 
 ```js
 ytdlp.limitRate('RATE').exec();
@@ -936,7 +1011,7 @@ ytdlp.throttledRate('Rate').exec();
 
 **引数の型**: `String型`、`Number型`
 
-**yt-dlpのオプション**: `-R`、`--retries`
+**yt-dlpのオプション**: `-R`・`--retries`
 
 ```js
 ytdlp.retries('Retries').exec();
@@ -994,7 +1069,7 @@ DASHまたはhls、ISMのダウンロードできないフラグメントをス�
 
 **関数名**: `noAbortOnUnavailableFragments()`、`skipUnavailableFragments()`
 
-**yt-dlpのオプション**: `--no-abort-on-unavailable-fragments`、`--skip-unavailable-fragments`
+**yt-dlpのオプション**: `--no-abort-on-unavailable-fragments`・`--skip-unavailable-fragments`
 
 ```js
 ytdlp.noAbortOnUnavailableFragments().exec();
@@ -1008,7 +1083,7 @@ ytdlp.skipUnavailableFragments().exec();
 
 **関数名**: `abortOnUnavailableFragments()`、`noSkipUnavailableFragments()`
 
-**yt-dlpのオプション**: `--abort-on-unavailable-fragments`、`--no-skip-unavailable-fragments`
+**yt-dlpのオプション**: `--abort-on-unavailable-fragments`・`--no-skip-unavailable-fragments`
 
 ```js
 ytdlp.abortOnUnavailableFragments().exec();
@@ -1153,7 +1228,7 @@ ytdlp.downloadSections('Regex').exec();
 
 **引数の型**: `String型`
 
-**yt-dlpのオプション**: `--downloader`、`--external-downloader`
+**yt-dlpのオプション**: `--downloader`・`--external-downloader`
 
 ```js
 ytdlp.downloader('[Proto:]Name').exec();
@@ -1169,7 +1244,7 @@ ytdlp.externalDownloader('[Proto:]Name').exec();
 
 **引数の型**: `String型`
 
-**yt-dlpのオプション**: `--downloader-args`、`--external-downloader-args`
+**yt-dlpのオプション**: `--downloader-args`・`--external-downloader-args`
 
 ```js
 ytdlp.downloaderArgs('Name:Args').exec();
@@ -1178,7 +1253,7 @@ ytdlp.externalDownloaderArgs('Name:Args').exec();
 
 ---
 
-### ファイルシステムオプション
+### ファイルシステムオプション - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)
 
 ---
 
@@ -1189,7 +1264,7 @@ ytdlp.externalDownloaderArgs('Name:Args').exec();
 
 **引数の型**: `String型`
 
-**yt-dlpのオプション**: `-a`、`--batch-file`、`--no-batch-file`
+**yt-dlpのオプション**: `-a`・`--batch-file`、`--no-batch-file`
 
 ```js
 ytdlp.batchFile('File').exec(); //ファイルを指定してダウンロードする
@@ -1205,7 +1280,7 @@ ytdlp.noBatchFile().exec(); //バッチファイルからURLを読み込まな�
 
 **引数の型**: `String型`
 
-**yt-dlpのオプション**: `-P`、`--paths`
+**yt-dlpのオプション**: `-P`・`--paths`
 
 ```js
 ytdlp.paths('[Types:]Path').exec();
@@ -1220,7 +1295,7 @@ ytdlp.paths('[Types:]Path').exec();
 
 **引数の型**: `String型`
 
-**yt-dlpのオプション**: `-o`、`--output`
+**yt-dlpのオプション**: `-o`・`--output`
 
 ```js
 ytdlp.output('[Types:]Template').exec();
@@ -1291,7 +1366,7 @@ ytdlp.trimFilenames('Length').exec();
 
 **関数名**: `noOverwrites()`
 
-**yt-dlpのオプション**: `-w`、`--no-overwrites`
+**yt-dlpのオプション**: `-w`・`--no-overwrites`
 
 ```js
 ytdlp.noOverwrites().exec();
@@ -1318,7 +1393,7 @@ ytdlp.noForceOverwrites().exec(); //関連ファイルのみ上書き（yt-dlp�
 
 **関数名**: `continue()`、`noContinue()`
 
-**yt-dlpのオプション**: `-c`、`--continue`、`--no-continue`
+**yt-dlpのオプション**: `-c`・`--continue`、`--no-continue`
 
 ```js
 ytdlp.continue().exec(); //途中から再開する（yt-dlpのデフォルト）
@@ -1491,22 +1566,473 @@ ytdlp.rmCacheDir().exec(); //キャッシュを保存せず、すべて削除す
 
 ---
 
-### サムネイルオプション
+### サムネイルオプション - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#thumbnail-options)
 
 ---
 
-### ダウンロードする動画URLを記述したファイルを指定する
-動画URLを記述したファイルを指定してまとめてダウンロードできます。このオプションには、何かしらの値を指定する必要があります。`--no-batch-file`はバッチファイルを無視します。
+### サムネイルのダウンロード
+サムネイル画像をダウンロードすることができます。`writeAllThumbnails()`を使用すると全ての形式のサムネイル画像がダウンロードされます。
 
-**関数名**: `batchFile()`、`noBatchFile()`
+**関数名**: `writeThumbnail()`、`writeAllThumbnails()`、`noWriteThumbnail()`
+
+**yt-dlpのオプション**: `--write-thumbnail`、`--write-all-thumbnails`、`--no-write-thumbnail`
+
+```js
+ytdlp.writeThumbnail().exec(); //サムネイルをダウンロードする
+ytdlp.writeAllThumbnails().exec(); //全てのサムネイルをダウンロードする
+ytdlp.noWriteThumbnail().exec(); //サムネイルをダウンロードしない（yt-dlpのデフォルト）
+```
+
+---
+
+### サムネイルのリストアップ
+指定された動画の利用可能なサムネイルをリストアップします。
+
+**関数名**: `listThumbnails()`
+
+**yt-dlpのオプション**: `--list-thumbnails`
+
+```js
+ytdlp.listThumbnails().exec();
+```
+
+---
+
+### インターネットショートカットオプション - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#internet-shortcut-options)
+
+---
+
+### インターネットショートカットの書き込み
+インターネットショートカットを書き込むことができます。
+
+**関数名**: `writeLink()`、`writeUrlLink()`、`writeWeblocLink()`、`writeDesktopLink()`
+
+**yt-dlpのオプション**: `--write-link`、`--write-url-link`、`--write-webloc-link`、`--write-desktop-link`
+
+```js
+ytdlp.writeLink().exec(); //プラットフォームに応じてインターネットショートカットの種類を変えて書き込む
+ytdlp.writeUrlLink().exec(); //Windowsのインターネットショートカットを書き込む
+ytdlp.writeWeblocLink().exec(); //MacOSのインターネットショートカットを書き込む
+ytdlp.writeDesktopLink().exec(); //Linuxのインターネットショートカットを書き込む
+```
+
+---
+
+### 冗長性・シミュレーションオプション - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#verbosity-and-simulation-options)
+
+---
+
+### ログの出力を最小限にする
+yt-dlpの出力するログを最小限することができます。このオプションは、[`verbose()`](#デバッグ情報を表示する)と一緒に使用するとログをstderrに出力します。
+
+**関数名**: `quiet()`
+
+**yt-dlpのオプション**: `-q`・`--quiet`
+
+```js
+ytdlp.quiet().exec();
+```
+
+---
+
+### 警告を無視する
+yt-dlpによる警告を完全に無視します。
+
+**関数名**: `noWarnings()`
+
+**yt-dlpのオプション**: `--no-warnings`
+
+```js
+ytdlp.noWarnings().exec();
+```
+
+---
+
+### 実行をシミュレートのみにする
+`simulate()`を使用するとシミュレートのみが実行され、ダウンロードも書き込みも実行されません。
+
+**関数名**: `simulate()`、`noSimulate()`
+
+**yt-dlpのオプション**: `-s`・`--simulate`、`--no-simulate`
+
+```js
+ytdlp.simulate().exec(); //シュミレートのみを実行する
+ytdlp.noSimulate().exec(); //一覧表示等のオプションを使用しても動画をダウンロードする
+```
+
+---
+
+### 「No video formats」エラーを無視する - <div style="background: #6d7034;display: inline;">==実験的==</div>
+「No video formats」のエラーを無視することができます。実際にダウンロードできない動画でもメタデータを抽出するのに便利です。
+
+このオプションは**実験的**なオプションです。
+
+**関数名**: `ignoreNoFormatsError()`、`noIgnoreNoFormatsError()`
+
+**yt-dlpのオプション**: `--ignore-no-formats-error`、`--no-ignore-no-formats-error`
+
+```js
+ytdlp.ignoreNoFormatsError().exec(); //エラーを無視する
+ytdlp.noIgnoreNoFormatsError().exec(); //エラーを無視しない（yt-dlpのデフォルト）
+```
+
+---
+
+### 動画をダウンロードせず、関連ファイルのみを書き込む
+動画のダウンロードをスキップし、その他関連ファイルのみを書き込みます。
+
+**関数名**: `skipDownload()`、`noDownload()`
+
+**yt-dlpのオプション**: `--skip-download`・`--no-download`
+
+```js
+ytdlp.skipDownload().exec();
+ytdlp.noDownload().exec();
+```
+
+---
+
+### テンプレートで指定された動画の諸情報を表示する
+シュミレートするだけだが、テンプレートを使用して指定された動画の諸情報を表示する。このオプションは、複数回指定することができます。
+
+**関数名**: `print()`
 
 **引数の型**: `String型`
 
-**yt-dlpのオプション**: `-a`、`--batch-file`、`--no-batch-file`
+**yt-dlpのオプション**: `-O`、`--print`
 
 ```js
-ytdlp.batchFile('File').exec(); //ファイルを指定してダウンロードする
-ytdlp.noBatchFile().exec(); //バッチファイルからURLを読み込まない（yt-dlpのデフォルト）
+ytdlp.print('[When:]Template').exec();
+```
+
+---
+
+### テンプレートで指定された動画の諸情報をファイルに書き込む
+シュミレートするだけだが、テンプレートを使用して指定された動画の諸情報をファイルに書き込むことができます。このオプションは、複数回指定することができます。
+
+**関数名**: `printToFile()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `--print-to-file`
+
+```js
+ytdlp.printToFile('[When:]Template File').exec();
+```
+
+---
+
+### 各動画のJSON情報を表示する
+各動画のJSON情報を表示します。指定されたURLに対してのJSON情報がほしい場合は、[`dumpSingleJson()`](#URLのJSON情報を表示する)を使用してください。
+
+**関数名**: `dumpJson()`
+
+**yt-dlpのオプション**: `-j`、`--dump-json`
+
+```js
+ytdlp.dumpJson().exec();
+```
+
+---
+
+### URLのJSON情報を表示する
+指定されたURLのJSON情報を表示します。各動画のJSON情報がほしい場合は、[`dumpJson()`](#各動画のjson情報を表示する)を使用してください。
+
+**関数名**: `dumpSingleJson()`
+
+**yt-dlpのオプション**: `-J`、`--dump-single-json`
+
+```js
+ytdlp.dumpSingleJson().exec();
+```
+
+---
+
+### シュミレートオプションが指定されていてもダウンロードアーカイブのエントリーを書き込む
+シュミレートでの実行でもエラーが発生しない限りダウンロードアーカイブにエントリーを記述します。このオプションは、どちらの関数を指定しても同じ結果となります。
+
+**関数名**: `forceWriteArchive()`、`forceDownloadArchive()`
+
+**yt-dlpのオプション**: `--force-write-archive`・`--force-download-archive`
+
+```js
+ytdlp.forceWriteArchive().exec();
+ytdlp.forceDownloadArchive().exec();
+```
+
+---
+
+### 進捗状況を新しい行に出力する
+進捗状況（プログレスバー）を改行して出力できます。
+
+**関数名**: `newline()`
+
+**yt-dlpのオプション**: `--newline`
+
+```js
+ytdlp.newline().exec();
+```
+
+---
+
+### 進捗状況を表示しない
+進捗状況を表示したくない場合は、`noProgress()`を使用してください。`progress()`を使用すると[`quiet()`](#ログの出力を最小限にする)が適応されていても進捗状況を表示します。
+
+**関数名**: `noProgress()`、`progress()`
+
+**yt-dlpのオプション**: `--no-progress`、`--progress`
+
+```js
+ytdlp.noProgress().exec(); //進捗状況を表示しない
+ytdlp.progress().exec(); //quiet()を適応していても進捗状況を表示する
+```
+
+---
+
+### コンソールタイトルを進捗状況にする
+コンソールのタイトルバーを進捗状況にすることができます。
+
+**関数名**: `consoleTitle()`
+
+**yt-dlpのオプション**: `--console-title`
+
+```js
+ytdlp.consoleTitle().exec();
+```
+
+---
+
+### 進捗状況のテンプレートを指定する
+進捗状況をテンプレートで指定することができます。このオプションには、何かしらの値を指定する必要があります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#verbosity-and-simulation-options)をご覧ください。
+
+**関数名**: `progressTemplate()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `--progress-template`
+
+```js
+ytdlp.progressTemplate('[Types:]Template').exec();
+```
+
+---
+
+### デバッグ情報を表示する
+ダウンロード等に関する各種デバッグ情報を表示できます。
+
+**関数名**: `verbose()`
+
+**yt-dlpのオプション**: `-v`、`--verbose`
+
+```js
+ytdlp.verbose().exec();
+```
+
+---
+
+### ダウンロードしたページをbase64エンコードしたものを表示する
+ダウンロードしたページを、base64エンコードしたものを表示できます。このオプションは、問題のデバッグに使用されます。ファイルに書き込む必要がある場合は、[`writePages()`](#ダウンロードしたページを実行中のディレクトリに書き込む)を使用してください。
+
+**関数名**: `dumpPages()`
+
+**yt-dlpのオプション**: `--dumpPages`
+
+```js
+ytdlp.dumpPages().exec();
+```
+
+---
+
+### ダウンロードしたページを実行中のディレクトリに書き込む
+ダウンロードした中間ページをyt-dlpを実行しているディレクトリに書き込みます。このオプションは、問題のデバッグに使用されます。base64でログに出力する必要がある場合は、[`dumpPages()`](#ダウンロードしたページをbase64エンコードしたものを表示する)を使用してください。
+
+**関数名**: `writePages()`
+
+**yt-dlpのオプション**: `--write-pages`
+
+```js
+ytdlp.writePages().exec();
+```
+
+---
+
+### HTTPの送受信トラフィックを表示する
+HTTPの送受信トラフィックを表示する必要がある場合は、このオプションを使用してください。
+
+**関数名**: `printTraffic()`
+
+**yt-dlpのオプション**: `--print-traffic`
+
+```js
+ytdlp.printTraffic().exec();
+```
+
+---
+
+### 回避オプション - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#workarounds)
+
+---
+
+### エンコーディングの指定 - <div style="background: #6d7034;display: inline;">==実験的==</div>
+指定されたエンコーディングの使用を強制できます。
+
+このオプションは**実験的**なオプションです。
+
+**関数名**: `encoding()`
+
+**yt-dlpのオプション**: `--encoding`
+
+```js
+ytdlp.encoding().exec();
+```
+
+---
+
+### TLS拡張をサポートしていないサーバーへのHTTPS接続を許可する
+RFC 5746 secure renegotiationをサポートしないサーバーへのHTTPS接続を許可する必要がある場合は、このオプションを使用してください。
+
+**関数名**: `legacyServerConnect()`
+
+**yt-dlpのオプション**: `--legacyServerConnect`
+
+```js
+ytdlp.legacyServerConnect().exec();
+```
+
+---
+
+### HTTPS証明書の検証をしない
+HTTPS証明書の検証をスキップしたい場合は、このオプションを使用してください。
+
+**関数名**: `noCheckCertificates()`
+
+**yt-dlpのオプション**: `--no-check-certificates`
+
+```js
+ytdlp.noCheckCertificates().exec();
+```
+
+---
+
+### 暗号化されていない接続を使用して動画情報を取得する（YouTubeのみのサポート）
+暗号化されていない接続を使用して動画情報を取得できます。このオプションは、現在**YouTubeのみのサポート**となっています。
+
+**関数名**: `preferInsecure()`
+
+**yt-dlpのオプション**: `--prefer-insecure`
+
+```js
+ytdlp.preferInsecure().exec();
+```
+
+---
+
+### カスタムHTTPヘッダーの指定
+追加してHTTPヘッダーを指定する必要がある場合は、このオプションを使用してください。このオプションには、何かしらの値を指定する必要があります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#workarounds)をご覧ください。
+
+**関数名**: `addHeaders()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `--add-headers`
+
+```js
+ytdlp.addHeaders('Field:Value').exec();
+```
+
+---
+
+### 双方向性テキストに対応していないデバイスを回避する
+アラビア語などの右から書く言語等を扱うときにこのオプションを使用してください。詳細は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#workarounds)をご覧ください。
+
+**関数名**: `bidiWorkaround()`
+
+**yt-dlpのオプション**: `--bidi-workaround`
+
+```js
+ytdlp.bidiWorkaround().exec();
+```
+
+---
+
+### データ抽出中のリクエストの間に一時停止する時間の指定
+データ抽出中のリクエストの間に一時停止する時間を指定できます。このオプションには、**秒数**を指定してください。
+
+**関数名**: `sleepRequests()`
+
+**引数の型**: `String型`、`Number型`
+
+**yt-dlpのオプション**: `--sleep-requests`
+
+```js
+ytdlp.sleepRequests('Seconds').exec();
+```
+
+---
+
+### ダウンロード前に指定された時間一時停止する
+各ダウンロードの前に一時停止する時間を指定できます。このオプションには、**秒数**を指定してください。このオプションと、[`maxSleepInterval()`](#一時停止の最大秒数を指定する)が一緒に使用された場合は一時停止する最小時間となります。
+
+このオプションは、どちらの関数を使用しても同じ結果となります。
+
+**関数名**: `sleepInterval()`、`minSleepInterval()`
+
+**引数の型**: `String型`、`Number型`
+
+**yt-dlpのオプション**: `--sleep-interval`・`--min-sleep-interval`
+
+```js
+ytdlp.sleepInterval('Interval').exec();
+ytdlp.minSleepInterval('Interval').exec();
+```
+
+---
+
+### 一時停止の最大秒数を指定する
+一時停止する時間の最大秒数を指定できます。このオプションには、**秒数**を指定してください。このオプションは、[`sleepInterval()`や`minSleepInterval()`](#ダウンロード前に指定された時間一時停止する)と一緒に使用することが可能です。一緒に使用すると、[`sleepInterval()`や`minSleepInterval()`](#ダウンロード前に指定された時間一時停止する)は**一時停止の最小時間の指定オプション**となります。
+
+**関数名**: `maxSleepInterval()`
+
+**引数の型**: `String型`、`Number型`
+
+**yt-dlpのオプション**: `--max-sleep-interval`
+
+```js
+ytdlp.maxSleepInterval('Interval').exec();
+```
+
+---
+
+### 字幕のダウンロード前の一時停止時間の指定
+字幕をダウンロードする際の一時停止秒数を指定できます。このオプションには、**秒数**を指定してください。
+
+**関数名**: `sleepSubtitles()`
+
+**引数の型**: `String型`、`Number型`
+
+**yt-dlpのオプション**: `--sleep-subtitles`
+
+```js
+ytdlp.sleepSubtitles('Interval').exec();
+```
+
+---
+
+### 動画フォーマットオプション - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#video-format-options)
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
 ```
 
 ---
@@ -1526,22 +2052,892 @@ ytdlp.paths('[Types:]Path').exec();
 
 ---
 
-### インターネットショートカットオプション
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
 
----
-
-### ダウンロードする動画URLを記述したファイルを指定する
-動画URLを記述したファイルを指定してまとめてダウンロードできます。このオプションには、何かしらの値を指定する必要があります。`--no-batch-file`はバッチファイルを無視します。
-
-**関数名**: `batchFile()`、`noBatchFile()`
+**関数名**: `paths()`
 
 **引数の型**: `String型`
 
-**yt-dlpのオプション**: `-a`、`--batch-file`、`--no-batch-file`
+**yt-dlpのオプション**: `-P`、`--paths`
 
 ```js
-ytdlp.batchFile('File').exec(); //ファイルを指定してダウンロードする
-ytdlp.noBatchFile().exec(); //バッチファイルからURLを読み込まない（yt-dlpのデフォルト）
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### 字幕オプション - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#subtitle-options)
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### 認証オプション - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#authentication-options)
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### 後処理オプション - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#post-processing-options)
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### SponsorBlockオプション - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#sponsorblock-options)
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### Extractor オプション - [公式ドキュメント](https://github.com/yt-dlp/yt-dlp#sponsorblock-options)
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
+```
+
+---
+
+### ダウンロード先のパスの指定
+ファイルをダウンロードするパスを指定できます。このオプションには、何かしらの値を指定する必要があります。このオプションは、[--output](#ファイル名のテンプレートを指定する)オプションが絶対パスの場合、**無効**になります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#filesystem-options)をご覧ください。
+
+**関数名**: `paths()`
+
+**引数の型**: `String型`
+
+**yt-dlpのオプション**: `-P`、`--paths`
+
+```js
+ytdlp.paths('[Types:]Path').exec();
 ```
 
 ---
