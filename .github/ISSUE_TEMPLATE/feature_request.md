@@ -1,9 +1,7 @@
 ---
 name: 新機能のリクエスト
 about: このAPIをよりよくするための新機能をリクエストしてください！
-title: ''
 labels: new
-assignees: ''
 
 ---
 

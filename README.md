@@ -4,7 +4,7 @@
 
 **Node.jsで簡単にyt-dlpを実行します。独自のコードを作成する必要はありません。**
 
-このプロジェクトは、[fluent-ffmpeg](https://www.npmjs.com/package/fluent-ffmpeg)を参考に作成されました。
+このAPIは、[fluent-ffmpeg](https://www.npmjs.com/package/fluent-ffmpeg)を参考に作成されました。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 </div>
@@ -12,10 +12,7 @@
 ## English version -> [README English Version](./README-EN.md)
 
 ## 目次
-- [動作確認に関して](#動作確認に関して)
-    - [Nodejs](#nodejs)
-    - [OS](#os)
-- [簡単な説明・注意](#簡単な説明・注意)
+- [説明・注意](#説明・注意)
     - [説明](#説明)
     - [注意](#注意)
 - [導入](#導入)
@@ -52,36 +49,46 @@
 - [ライセンス](#ライセンス)
     - [ライセンス文](#ライセンス文)
 
-## 動作確認に関して
-
-以下に記載されているNode.jsのバージョン、OSの種類以外ではこのAPIが正常に動作しない可能性があります。
-
-### Nodejs
-1. v19.7.0
-
-### OS
-1. Windows 11
-2. Ubuntu 22.04
-3. CentOS 7
-
-## 簡単な説明・注意
+## 説明・注意
 
 ### 説明
-このプロジェクトは、yt-dlpをNode.jsで利用できるようにするAPIです。yt-dlpは、このAPIによって自動でダウンロードされるため、デバイスへのインストールは必要ありません。
+
+#### このAPIに関して
+このAPIは、yt-dlpをNode.jsで利用できるようにするAPIです。
+
+#### このAPIのメリット
+1. yt-dlpやffmpeg、ffprobeはこのAPIによって自動でダウンロードされるため独自のコードを書く必要はありません。（yt-dlp・ffmpeg・ffprobeのみ）
+2. yt-dlpを実行する関数などを用意する必要はなく、このAPIを読み込むだけですぐに利用を開始できます。
+3. このAPIはオープンソースソフトウェアであるため、利用のために料金を払ったり、許可を取る必要はありません。（利用は自己責任です。）
+
+#### このAPIのデメリット
+1. yt-dlpのバグなどによって動作しない場合があります。
+2. yt-dlpのオプションなどが更新されるとすぐにはそのオプションを使用できない可能性があります。
+3. このAPIにない機能は独自のコードを用意する必要がある。（追加してほしい機能はDiscussions（議論）の「新機能の要望」に送信してください！）
+
+#### このAPIの開発に関して
+このAPIの開発は、「YBD Project」が行っています。
 
 ### 注意
-**1. 自己責任での利用をお願いします。このプロジェクトの利用によって発生した損害・損失等に関して開発者は一切の責任を取りません。**<br>
+**1. 自己責任での利用をお願いします。このAPIの利用によって発生した損害・損失等に関して開発者は一切の責任を取りません。**<br>
 **2. このAPIは、Node.jsでの実行を目的としたものであり、ブラウザ等のNode.js以外の環境での動作は保証できません。**
+
+## このAPIを支援する
+現時点でこのAPIを支援する方法は、このAPIを利用（npmからダウンロード）していただくかSNS等で拡散する方法の二つがあります。<br>
+少しだけでも利用していただくだけで相当な支援となります！（開発者側としてはうれしいです！）
+
+## このAPIのバグ報告など
+このAPIのバグ報告などは、[`CONTRIBUTING.md`](./CONTRIBUTING.md)をご覧ください。
 
 ## 導入
 
 ### npmを使用する場合
-```sh
+```bash
 npm install fluent-ytdlp
 ```
 
 ### yarnを使用する場合
-```sh
+```bash
 yarn add fluent-ytdlp
 ```
 
@@ -2990,7 +2997,7 @@ ytdlp.extractorArgs('IE_Key:Args').run();
 ---
 
 ## ライセンス
-このプロジェクトは、MITライセンスで公開されています。詳細はLICENSEファイルまたは以下のライセンス文をご覧ください。
+このAPIは、MITライセンスで公開されています。詳細はLICENSEファイルまたは以下のライセンス文をご覧ください。
 
 <div align="center">
 
