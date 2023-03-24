@@ -9,8 +9,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 </div>
 
-## English version -> [README English Version](./README-EN.md)
-
 ## 目次
 - [説明・注意](#説明・注意)
     - [説明](#説明)
@@ -19,7 +17,7 @@
     - [npmを使用する場合](#説明)
     - [yarnを使用する場合](#注意)
 - [基本的な使用方法](#基本的な使用方法)
-    - [モジュールの読み込みとURLの指定](#モジュールの読み込みとURLの指定)
+    - [モジュールの読み込みとURLの指定](#モジュールの読み込みとurlの指定)
     - [yt-dlpオプションの指定なし](#yt-dlpオプションの指定なし)
     - [yt-dlpオプションの指定あり（解像度の指定）](#yt-dlpオプションの指定あり（解像度の指定）)
 - [応用的な使用方法](#応用的な使用方法)
@@ -80,7 +78,7 @@
 ## このAPIのバグ報告・改善
 このAPIのバグ報告などは[`CONTRIBUTING.md`](./CONTRIBUTING.md)をご覧ください。
 
-このAPI自体、READMEやCONTRIBUTINGなどのドキュメントの改善点はDiscussions（議論）の「改善点」に質問として送信してください。ここに送信された質問は開発者が定期的に閲覧し、その質問に対する回答として返信していきます。
+このAPI自体、READMEやCONTRIBUTINGなどのドキュメントの改善点はDiscussions（議論）の「改善点」に質問として送信してください。ここに送信された改善点は開発者が定期的に閲覧し、その質問に対する回答として返信していきます。
 
 ## 導入
 
@@ -103,9 +101,19 @@ yarn add fluent-ytdlp
 
 ### モジュールの読み込みとURLの指定
 
+デバッグを有効にしない場合は、以下のコードを使用してください。
+
 ```js
 const fluentYTDlp = require('fluent-ytdlp'); //モジュールの読み込み
-const ytdlp = new fluentYTDlp('URL');
+const ytdlp = new fluentYTDlp('URL'); //インスタンスの作成
+```
+
+デバッグ（実行のログ出力）を行う場合は、以下のコードを使用してください。（インスタンス作成の第二引数に`true`を指定します。）<br>
+**注意**: 間違った形式で指定しているオプションを強制的に適応したい場合は、[`run()`](#yt-dlpの実行)の引数に`{force: true}`を渡してください。
+
+```js
+const fluentYTDlp = require('fluent-ytdlp'); //モジュールの読み込み
+const ytdlp = new fluentYTDlp('URL', true); //インスタンスの作成
 ```
 
 ### yt-dlpオプションの指定なし
@@ -115,7 +123,7 @@ const ytdlpProcess = ytdlp.run(); //yt-dlpの実行
 
 ytdlpProcess.stdout.on('data', () => {/* ffmpegの標準出力 */});
 ytdlpProcess.stderr.on('data', () => {/* ffmpegの標準エラー出力 */});
-ytdlpProcess.on('close', () => {/* した場合の処理 */});
+ytdlpProcess.on('close', () => {/* 終了した場合の処理 */});
 ```
 
 ### yt-dlpオプションの指定あり（解像度の指定）
@@ -125,7 +133,7 @@ const ytdlpProcess = ytdlp.resolution('1920x1080').run(); //yt-dlpの実行
 
 ytdlpProcess.stdout.on('data', () => {/* ffmpegの標準出力 */});
 ytdlpProcess.stderr.on('data', () => {/* ffmpegの標準エラー出力 */});
-ytdlpProcess.on('close', () => {/* した場合の処理 */});
+ytdlpProcess.on('close', () => {/* 終了した場合の処理 */});
 ```
 
 ## 応用的な使用方法
@@ -167,32 +175,66 @@ yt-dlpのオプションには、独自の指定方法をしなければなら�
 ---
 
 ### yt-dlpの実行
-yt-dlpを指定されたオプションで実行します。オプションの関数へ受け付けない型を引数として渡している場合でもそのオプションを適応する必要がある場合は、この関数に`true`を引数として渡してください。
+yt-dlpを指定されたオプションで実行します。引数の説明は以下をご覧ください。
 
 **関数名**: `run()`
 
 **引数の型**: `Boolean型`
 
-```js
-/* 適応しない */
-ytdlp.run();
-ytdlp.run(false);
+**引数説明**:
+- `force`: 間違ったオプションの指定をしていても強制的に適応します。（デフォルトは`false`）
+- `spawnOptions`: Node.jsの`spawn`に渡すオプションを指定できます。
 
-/* 適応する */
-ytdlp.run(true);
+```js
+/* 間違ったオプションを強制的に適応しない（デフォルト） */
+ytdlp.run();
+ytdlp.run({});
+ytdlp.run({
+    force: false
+});
+
+/* 間違ったオプションを強制的に適応する */
+ytdlp.run({
+    force: true
+});
+
+/* spawnにオプションを渡す */
+ytdlp.run({
+    spawnOptions: {
+        shell: true,
+        cwd: '/cwd/dir/'
+    }
+});
 ```
 
 ---
 
 ### データ取得をストリーム以外で実行する
-データの取得をストリーム以外での実行が必要な場合は、以下のオプション（`noStream()`）を使用してください。このオプションは、指定しない場合と比べて不安定な場合があります。
+データの取得をストリーム以外で行う必要がある場合は、以下のオプション（`noStreamRun()`）を使用してください。このオプションは、指定しない場合と比べて不安定な場合があります。
 
-このオプションを指定した場合は、関数の返り値としてyt-dlpの出力したデータを一気に返します。
+このオプションを指定した場合は、引数を指定することで値を指定できます。
 
-**関数名**: `noStream()`
+**関数名**: `noStreamRun()`
+
+**引数の型**: `object型`
+
+**引数説明**:
+- `type`: 実行するChild_processの関数を指定できます。（`exec`または`execFile`）
+- `callback`: 実行結果を受け取るコールバック関数を指定できます。
+- `force`: 間違ったオプションの指定をしていても強制的に適応します。（デフォルトは`false`）
 
 ```js
-ytdlp.noStream().run();
+/* 「exec」で実行する */
+ytdlp.noStreamRun({
+    type: 'exec',
+    callback: function (err, stdout, stderr) {/* Process... */}
+});
+
+/* 「execFile」で実行する */
+ytdlp.noStreamRun({
+    type: 'execFile',
+    callback: function (err, stdout, stderr) {/* Process... */}
+});
 ```
 
 ---

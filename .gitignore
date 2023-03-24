@@ -1,3 +1,5 @@
 /temp
 /node_modules
-.todo
+/.todo
+/bin
+/test
