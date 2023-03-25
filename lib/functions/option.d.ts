@@ -14,3 +14,4 @@ declare const _default: {
     decode: typeof decode;
 };
 export default _default;
+//# sourceMappingURL=option.d.ts.map

@@ -62,10 +62,10 @@
 #### このAPIのデメリット
 1. yt-dlpのバグなどによって動作しない場合があります。
 2. yt-dlpのオプションなどが更新されるとすぐにはそのオプションを使用できない可能性があります。
-3. このAPIにない機能は独自のコードを用意する必要がある。（追加してほしい機能はDiscussions（議論）の「新機能の要望」に送信してください！）
+3. このAPIにない機能は独自のコードを用意する必要があります。（追加してほしい機能はDiscussions（議論）の「新機能の要望」に送信してください！）
 
 #### このAPIの開発に関して
-このAPIの開発は、「YBD Project」が行っています。
+このAPIの開発は、**YBD Project**が行っています。
 
 ### 注意
 **1. 自己責任での利用をお願いします。このAPIの利用によって発生した損害・損失等に関して開発者は一切の責任を取りません。**<br>
@@ -333,6 +333,7 @@ ytdlp.otherOptions({
     autonumberStart: 2
 }).run(); //「--autonumber-start」に「2」を渡して適応する場合（yt-dlpで非推奨のオプション）
 ```
+
 ---
 
 ### yt-dlpパスの取得
@@ -342,6 +343,28 @@ ytdlp.otherOptions({
 
 ```js
 ytdlp._ytdlpPath();
+```
+
+---
+
+### ffmpegパスの取得
+このAPIが、内部で使用するffmpegのパスを返します。
+
+**関数名**: `_ffmpegPath()`
+
+```js
+ytdlp._ffmpegPath();
+```
+
+---
+
+### ffprobeパスの取得
+このAPIが、内部で使用するffprobeのパスを返します。
+
+**関数名**: `_ffprobePath()`
+
+```js
+ytdlp._ffprobePath();
 ```
 
 ---

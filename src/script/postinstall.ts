@@ -231,7 +231,7 @@ Promise.all([ytdlp(), ffmpeg(), ffprobe()])
     .then((binaryPathData) => {
         console.log('[FLUENT-YTDLP]: yt-dlp・ffmpeg・ffprobeのダウンロードに成功しました。');
         fs.writeFileSync(
-            process.cwd() + '/lib/info.json',
+            process.cwd() + '/bin/info.json',
             JSON.stringify({
                 binaryPath: {
                     ytdlp: binaryPathData[0],

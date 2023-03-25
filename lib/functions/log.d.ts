@@ -20,3 +20,4 @@ declare class Log {
     }, text: any) => void;
 }
 export default Log;
+//# sourceMappingURL=log.d.ts.map
