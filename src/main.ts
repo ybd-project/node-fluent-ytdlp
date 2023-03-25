@@ -135,7 +135,6 @@ class fluentYTDlp {
     /* yt-dlpの実行に関するオプション */
     run = function (this: fluentYTDlp, runOptions: RunOptions = {}): ChildProcessWithoutNullStreams {
         //run()
-
         const logger = new Log('Run', this.debug),
             options = generateOption({debug: this.debug, wrongOption: this.wrongOption, options: this.options}, runOptions),
             ytdlpProcess = spawn(binaryPath.ytdlp, options, runOptions.spawnOptions || {shell: true});
@@ -150,7 +149,6 @@ class fluentYTDlp {
     };
     noStreamRun = function (this: fluentYTDlp, runOptions: NoStreamRunOptions = {type: 'execFile', callback: function () {}, force: false}): ChildProcess {
         //noStreamRun()
-
         const logger = new Log('NoStreamRun', this.debug),
             options = generateOption({debug: this.debug, wrongOption: this.wrongOption, options: this.options}, runOptions),
             ytdlpProcess = (() => {
@@ -172,16 +170,23 @@ class fluentYTDlp {
             ytdlpProcess.on('close', childProcessCloseEvent);
         }
 
+        logger.log('OK');
+
         return ytdlpProcess;
     };
 
     /* 簡易オプション */
     resolution = function (this: fluentYTDlp, resolution: string): fluentYTDlp {
+        //resolution()
         const logger = new Log('Resolution', this.debug),
             [width, height] = resolution.split('x');
+
+        //resolutionにxが含まれるかをチェックする
         if (!resolution.includes('x')) {
             logger.warning('このオプションの引数が「横×縦」で指定されていない可能性があります。');
         }
+
+        //型がstringかをチェックする
         if (typeof resolution !== 'string' || !resolution) {
             logger.warning('このオプションの引数の型が「String」ではない可能性があります。');
         }
@@ -190,6 +195,7 @@ class fluentYTDlp {
         return this;
     };
     width = function (this: fluentYTDlp, _width: string | number): fluentYTDlp {
+        //width()
         const logger = new Log('Width', this.debug),
             width = _width.toString();
 
@@ -203,6 +209,7 @@ class fluentYTDlp {
         return this;
     };
     height = function (this: fluentYTDlp, _height: string | number): fluentYTDlp {
+        //height()
         const logger = new Log('Height', this.debug),
             height = _height.toString();
 
@@ -216,6 +223,7 @@ class fluentYTDlp {
         return this;
     };
     filename = function (this: fluentYTDlp, filename: string): fluentYTDlp {
+        //filename()
         const logger = new Log('Filename', this.debug);
 
         //型がstringかをチェックする
@@ -228,6 +236,7 @@ class fluentYTDlp {
         return this;
     };
     extension = function (this: fluentYTDlp, extension: string): fluentYTDlp {
+        //extension()
         const logger = new Log('Extension', this.debug);
 
         //型がstringかをチェックする
@@ -242,7 +251,10 @@ class fluentYTDlp {
 
     /* その他のオプション */
     url = function (this: fluentYTDlp, url: string): fluentYTDlp {
+        //url()
         const logger = new Log('Url', this.debug);
+
+        //型がstringかをチェックする
         if (typeof url !== 'string' || !url) {
             logger.warning('このオプションの引数の型が「String」ではない可能性があります。');
         }
@@ -250,25 +262,34 @@ class fluentYTDlp {
         return this;
     };
     otherOptions = function (this: fluentYTDlp, otherOptions: YTDlpOptionsData): fluentYTDlp {
+        //otherOptions()
         const logger = new Log('OtherOptions', this.debug);
+
+        //otherOptionsがobjectかをチェックする
         if (typeof otherOptions !== 'object' || !otherOptions) {
             logger.warning('このオプションの引数の型が「Object」ではない可能性があります。');
         }
+
         Object.entries(otherOptions).forEach(([key, param]) => {
             this.options[key] = param;
         });
+
         return this;
     };
     _ytdlpPath = function (): string {
+        //_ytdlpPath()
         return binaryPath.ytdlp;
     };
     _ffmpegPath = function (): string {
+        //_ffmpegPath()
         return binaryPath.ffmpeg;
     };
     _ffprobePath = function (): string {
+        //_ffprobePath()
         return binaryPath.ffprobe;
     };
     _binPath = function (): string {
+        //_binPath()
         return binaryPath.folder;
     };
 
