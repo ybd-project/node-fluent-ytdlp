@@ -9,14 +9,12 @@ type ffbinariesResponseExtractData = {
 
 import fetch from 'sync-fetch';
 import fs from 'fs';
+import path from 'node:path';
 import decompress from 'decompress';
 import _arch from 'arch';
 
 const urls = (() => {
-        function ffbinariesResponseExtract(
-            response: any,
-            type: 'ffmpeg' | 'ffprobe',
-        ): ffbinariesResponseExtractData {
+        function ffbinariesResponseExtract(response: any, type: 'ffmpeg' | 'ffprobe'): ffbinariesResponseExtractData {
             const url = {
                 windows: {
                     x86: '',
@@ -119,7 +117,7 @@ const urls = (() => {
         return platform;
     })(),
     arch = _arch(),
-    binFolderPath = process.cwd() + '/bin',
+    binFolderPath = path.join(__dirname + '/../../bin').replace(/\\/g, '/'),
     binaryPath = {
         ytdlp: {
             windows: binFolderPath + '/yt-dlp.exe',
@@ -231,7 +229,7 @@ Promise.all([ytdlp(), ffmpeg(), ffprobe()])
     .then((binaryPathData) => {
         console.log('[FLUENT-YTDLP]: yt-dlp・ffmpeg・ffprobeのダウンロードに成功しました。');
         fs.writeFileSync(
-            process.cwd() + '/bin/info.json',
+            binFolderPath + '/info.json',
             JSON.stringify({
                 binaryPath: {
                     ytdlp: binaryPathData[0],

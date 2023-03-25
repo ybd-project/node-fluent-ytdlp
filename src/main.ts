@@ -36,10 +36,11 @@ type NoStreamRunOptions = {
 
 import {spawn, execFile, exec, ChildProcessWithoutNullStreams, ChildProcess} from 'node:child_process';
 import fs from 'node:fs';
+import path from 'node:path';
 import Log from './functions/log';
 import option from './functions/option';
 
-const {binaryPath, os} = JSON.parse(fs.readFileSync(process.cwd() + '/bin/info.json', 'utf8'));
+const {binaryPath, os} = JSON.parse(fs.readFileSync(path.join(__dirname + '/../bin/info.json'), 'utf8'));
 
 //yt-dlpのオプションを生成する
 function generateOption(
