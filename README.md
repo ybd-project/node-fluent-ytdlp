@@ -108,11 +108,16 @@ const fluentYTDlp = require('fluent-ytdlp'); //モジュールの読み込み
 const ytdlp = new fluentYTDlp('URL'); //インスタンスの作成
 ```
 
+TypeScriptで使用する場合は、requireのコードをimportに変更するだけで対応できます。
+```ts
+import fluentYTDlp from 'fluent-ytdlp'; //モジュールの読み込み
+const ytdlp = new fluentYTDlp('URL'); //インスタンスの作成
+```
+
 デバッグ（実行のログ出力）を行う場合は、以下のコードを使用してください。（インスタンス作成の第二引数に`true`を指定します。）<br>
 **注意**: 間違った形式で指定しているオプションを強制的に適応したい場合は、[`run()`](#yt-dlpの実行)の引数に`{force: true}`を渡してください。
 
 ```js
-const fluentYTDlp = require('fluent-ytdlp'); //モジュールの読み込み
 const ytdlp = new fluentYTDlp('URL', true); //インスタンスの作成
 ```
 
@@ -157,7 +162,7 @@ yt-dlpのオプションには、同じ意味を持つ別名のオプション�
 ここに記載されているオプションは、全てyt-dlpと同じ名前となります。その他、このAPIを簡単に利用するための簡易オプション等は独自命名となります。
 
 #### オプション関数の引数に関して
-関数に引数を渡す場合は、**文字列（String型）・数字（Number型）・真偽（Boolean型）・正規表現（RegExp型）・日付（Date型）・JSON（Object型）のいずれかを指定**する必要があります。<br>
+関数に引数を渡す場合は、**文字列（String型）・数字（Number型）・真偽（Boolean型）・日付（Date型）・JSON（Object型）のいずれかを指定**する必要があります。<br>
 オプションには、一つの型を受け付ける関数と、複数の型を受け付ける関数があることに注意してください。<br>
 受け付けない型を引数として渡された場合は、そのオプションは既定で適応されません。適応する場合は、[yt-dlpの実行](#yt-dlpの実行)をご覧ください。
 
@@ -389,41 +394,33 @@ ytdlp._binPath();
 ---
 
 ### ヘルプの取得
-yt-dlpの`--help`オプションを使用することで表示される情報を返します。この情報に改行を含ませない場合は、引数に`true`を指定します。<br>
-改行を含ませる場合は、`false`を指定するか何も指定しないでください。
+yt-dlpの`--help`オプションを適応します。
 
 **関数名**: `help()`
-
-**引数の型**: `Boolean型`
 
 **yt-dlpのオプション**: `-h`・`--help`
 
 ```js
-/* 改行あり */
-ytdlp.help();
-ytdlp.help(false);
-
-/* 改行なし */
-ytdlp.help(true);
+ytdlp.help().run();
 ```
 
 ---
 
 ### バージョンの取得
-yt-dlpのバージョンを返します。
+yt-dlpの`--version`を適応します。
 
 **関数名**: `version()`
 
 **yt-dlpのオプション**: `--version`
 
 ```js
-ytdlp.version();
+ytdlp.version().run();
 ```
 
 ---
 
 ### yt-dlpのアップデート
-yt-dlpをアップデートします。アップデートが完了しているかの確認は`_updateCompleted()`を実行します。
+yt-dlpをアップデートします。
 
 この際にアップデート先のバージョンを指定する必要がある場合は、[yt-dlpのアップデート先のバージョンを指定する](#yt-dlpのアップデート先のバージョンを指定する)をご覧ください。
 
@@ -432,17 +429,8 @@ yt-dlpをアップデートします。アップデートが完了している�
 **yt-dlpのオプション**: `-U`・`--update`、`--no-update`
 
 ```js
-ytdlp.update(); //バージョンを指定しない
-ytdlp.noUpdate(); //アップデートしない（yt-dlpのデフォルト）
-```
-
-#### _updateCompleted
-アップデートが完了している場合は`true`を返し、その他の場合は、`false`を返します。
-
-**関数名**: `_updateCompleted()`
-
-```js
-ytdlp._updateCompleted();
+ytdlp.update().run(); //バージョンを指定しない
+ytdlp.noUpdate().run(); //アップデートしない（yt-dlpのデフォルト）
 ```
 
 ---
@@ -684,6 +672,8 @@ ytdlp.noColors().run();
 
 **関数名**: `compatOptions()`
 
+**引数の型**: `String型`
+
 **yt-dlpのオプション**: `--compat-options`
 
 ```js
@@ -870,7 +860,7 @@ ytdlp.geoBypassIpBlock('IP BLOCK').run();
 
 **関数名**: `playlistItems()`
 
-**引数の型**: `String型`、`Number型`
+**引数の型**: `String型`
 
 **yt-dlpのオプション**: `-I`・`--playlist-items`
 
@@ -898,14 +888,14 @@ ytdlp.maxDownloads('Number').run();
 ### 最小ファイルサイズの指定
 最小ファイルサイズを指定できます。このオプションには、何かしらの値が必要です。
 
-**関数名**: `minFilesize()`
+**関数名**: `minFileSize()`
 
 **引数の型**: `String型`
 
 **yt-dlpのオプション**: `--min-filesize`
 
 ```js
-ytdlp.minFilesize('Size').run();
+ytdlp.minFileSize('Size').run();
 ```
 
 ---
@@ -913,14 +903,14 @@ ytdlp.minFilesize('Size').run();
 ### 最大ファイルサイズの指定
 最大ファイルサイズを指定できます。このオプションには、何かしらの値が必要です。
 
-**関数名**: `maxFilesize()`
+**関数名**: `maxFileSize()`
 
 **引数の型**: `String型`
 
 **yt-dlpのオプション**: `--max-filesize`
 
 ```js
-ytdlp.maxFilesize('Size').run();
+ytdlp.maxFileSize('Size').run();
 ```
 
 ---
@@ -943,14 +933,14 @@ ytdlp.date('Date').run();
 ### 指定した日時より以前の動画を処理する
 指定した日時より以前の動画を処理できます。日時の指定形式は[動画のアップロード日時の指定](#動画のアップロード日時の指定)をご覧ください。
 
-**関数名**: `datebefore()`
+**関数名**: `dateBefore()`
 
 **引数の型**: `String型`、`Date型`
 
 **yt-dlpのオプション**: `--datebefore`
 
 ```js
-ytdlp.datebefore('Date').run();
+ytdlp.dateBefore('Date').run();
 ```
 
 ---
@@ -958,14 +948,14 @@ ytdlp.datebefore('Date').run();
 ### 指定した日時以降の動画を処理する
 指定した日時より以前の動画を処理できます。日時の指定形式は[動画のアップロード日時の指定](#動画のアップロード日時の指定)をご覧ください。
 
-**関数名**: `dateafter()`
+**関数名**: `dateAfter()`
 
 **引数の型**: `String型`、`Date型`
 
 **yt-dlpのオプション**: `--dateafter`
 
 ```js
-ytdlp.dateafter('Date').run();
+ytdlp.dateAfter('Date').run();
 ```
 
 ---
@@ -1032,6 +1022,8 @@ ytdlp.ageLimit('Years').run();
 ダウンロードした動画IDを記録し、記録された動画は二回目以降ダウンロードをスキップします。`downloadArchive()`を使用する場合、何かしらの値を指定する必要があります。
 
 **関数名**: `downloadArchive()`、`noDownloadArchive()`
+
+**引数の型**: `String型`
 
 **yt-dlpのオプション**: `--download-archive`、`--no-download-archive`
 
@@ -1173,7 +1165,7 @@ ytdlp.fileAccessRetries('Retries').run();
 **yt-dlpのオプション**: `--fragment-retries`
 
 ```js
-ytdlp.fragmentRetries('Number').run();
+ytdlp.fragmentRetries('Retries').run();
 ```
 
 ---
@@ -1188,7 +1180,7 @@ ytdlp.fragmentRetries('Number').run();
 **yt-dlpのオプション**: `--retry-sleep`
 
 ```js
-ytdlp.retrySleep('Number').run();
+ytdlp.retrySleep('Seconds').run();
 ```
 
 ---
@@ -1216,7 +1208,7 @@ ytdlp.skipUnavailableFragments().run();
 
 ```js
 ytdlp.abortOnUnavailableFragments().run();
-ytdlp.abortOnUnavailableFragments().run();
+ytdlp.noSkipUnavailableFragments().run();
 ```
 
 ---
@@ -1311,12 +1303,12 @@ ytdlp.noLazyPlaylist().run(); //プレイリストの解析が終了してから
 ### 予想されるファイルサイズの書き込み
 拡張ファイル属性に予想されるファイルサイズを書き込むことができます。
 
-**関数名**: `xattrSetFilesize()`
+**関数名**: `xattrSetFileSize()`
 
 **yt-dlpのオプション**: `--xattr-set-filesize`
 
 ```js
-ytdlp.xattrSetFilesize().run();
+ytdlp.xattrSetFileSize().run();
 ```
 
 ---
@@ -1340,7 +1332,7 @@ ytdlp.noHlsUseMpegts().run(); //hls動画にmpegtsコンテナを使用しない
 
 **関数名**: `downloadSections()`
 
-**引数の型**: `String型`、`RegExp型`
+**引数の型**: `String型`
 
 **yt-dlpのオプション**: `--download-sections`
 
@@ -1437,7 +1429,7 @@ ytdlp.output('[Types:]Template').run();
 
 **関数名**: `outputNaPlaceholder()`
 
-**引数の型**: `String型`、`Number型`
+**引数の型**: `String型`
 
 **yt-dlpのオプション**: `--output-na-placeholder`
 
@@ -2308,8 +2300,13 @@ ytdlp.noWriteSubs().run(); //字幕ファイルを書き込まない（yt-dlpの
 **yt-dlpのオプション**: `--write-auto-subs`・`--write-automatic-subs`、`--no-write-auto-subs`・`--no-write-automatic-subs`
 
 ```js
-ytdlp.writeSubs().run(); //字幕ファイルを書き込む
-ytdlp.noWriteSubs().run(); //字幕ファイルを書き込まない（yt-dlpのデフォルト）
+/* 自動生成された字幕を書き込む */
+ytdlp.writeAutoSubs().run();
+ytdlp.writeAutomaticSubs().run();
+
+/* 自動生成された字幕を書き込まない（yt-dlpのデフォルト） */
+ytdlp.noWriteAutoSubs().run();
+ytdlp.noWriteAutomaticSubs().run();
 ```
 
 ---
@@ -2347,7 +2344,7 @@ ytdlp.subFormat('Format').run();
 
 **関数名**: `subLangs()`
 
-**引数の型**: `String型`、`RegExp型`
+**引数の型**: `String型`
 
 **yt-dlpのオプション**: `--sub-langs`
 
@@ -2885,7 +2882,7 @@ ytdlp.noSplitChapters().run(); //チャプターごとにファイルを分割�
 
 **関数名**: `removeChapters()`、`noRemoveChapters()`
 
-**引数の型**: `String型`、`RegExp型`
+**引数の型**: `String型`
 
 **yt-dlpのオプション**: `--remove-chapters`、`--no-remove-chapters`
 
@@ -2913,14 +2910,14 @@ ytdlp.noForceKeyframesAtCuts().run(); //設定し直さない（yt-dlpのデフ�
 ### 有効にするポストプロセッサープラグインを指定する
 大文字・小文字を区別して有効にするポストプロセッサープラグインの名前を指定できます。このオプションには、何かしらの値を指定する必要があります。指定形式は[yt-dlpの公式ドキュメント](https://github.com/yt-dlp/yt-dlp#post-processing-options)をご覧ください。
 
-**関数名**: `usePostprocessor()`
+**関数名**: `usePostProcessor()`
 
 **引数の型**: `String型`
 
 **yt-dlpのオプション**: `--use-postprocessor`
 
 ```js
-ytdlp.usePostprocessor('Name[:Args]').run();
+ytdlp.usePostProcessor('Name[:Args]').run();
 ```
 
 ---
@@ -2986,12 +2983,12 @@ ytdlp.noSponsorBlock().run();
 ### SponsorBlock APIのURLを指定する
 SponsorBlock APIのURLを指定できます。このオプションには、何かしらの値を指定する必要があります。
 
-**関数名**: `sponsorblockApi()`
+**関数名**: `sponsorBlockApi()`
 
 **yt-dlpのオプション**: `--sponsorblock-api`
 
 ```js
-ytdlp.sponsorblockApi().run();
+ytdlp.sponsorBlockApi().run();
 ```
 
 ---
