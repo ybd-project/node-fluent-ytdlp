@@ -223,7 +223,7 @@ ytdlp.run({
 
 **関数名**: `noStreamRun()`
 
-**引数の型**: `object型`
+**引数の型**: `Object型`
 
 **引数説明**:
 - `type`: 実行するChild_processの関数を指定できます。（`exec`または`execFile`）
