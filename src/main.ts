@@ -49,59 +49,66 @@ function generateOption(
     runOptions: RunOptions | NoStreamRunOptions,
 ): Array<any> {
     const logger = new Log('generateOption', debug),
-        exception = ['url', 'width', 'height', 'filename', 'extension'];
-    return Object.entries(options).reduce<any>((previous, [name, param]) => {
-        if (wrongOption.includes(name)) {
-            if (runOptions.force !== true) {
-                logger.warning('[' + name + ']は間違った引数が指定されている可能性があるため適応されませんでした。');
-                return previous;
+        exception = ['url', 'width', 'height', 'filename', 'extension'],
+        optionData = Object.entries(options).reduce<any>((previous, [name, param]) => {
+            if (wrongOption.includes(name)) {
+                if (runOptions.force !== true) {
+                    logger.warning('[' + name + ']は間違った引数が指定されている可能性があるため適応されませんでした。');
+                    return previous;
+                }
+                logger.warning('[' + name + ']は間違った引数が指定されている可能性がありますが、設定により強制的に適応されます。');
             }
-            logger.warning('[' + name + ']は間違った引数が指定されている可能性がありますが、設定により強制的に適応されます。');
-        }
-        if (exception.includes(name)) {
-            if (name === 'url') {
-                if (os.platform !== 'windows') {
-                    param = param.toString().replace('"', '');
-                }
-                previous.push(param);
-            } else if (name === 'width' || name === 'height') {
-                if (!previous.includes('--format')) {
-                    const format = (() => {
-                        let base = 'bestvideo[' + name + '=' + param + ']';
-                        if ((name === 'width' && !options['height']) || (name === 'height' && !options['width'])) {
-                            base += '+bestaudio';
-                        }
-                        return base;
-                    })();
-                    previous.push('--format');
-                    previous.push(format);
-                } else {
-                    previous[previous.indexOf('--format') + 1] += '[' + name + '=' + param + ']+bestaudio';
-                }
-            } else if (name === 'filename') {
-                const output = '"' + param + '.%(ext)s"';
-                if (!previous.includes('--output')) {
-                    previous.push('--output');
-                    previous.push(output);
-                } else {
-                    previous[previous.indexOf('--output') + 1] = output;
-                }
-            } else if (name === 'extension') {
-                if (!previous.includes('--merge-output-format')) {
-                    previous.push('--merge-output-format');
+            if (exception.includes(name)) {
+                if (name === 'url') {
+                    if (os.platform !== 'windows') {
+                        param = param.toString().replace('"', '');
+                    }
                     previous.push(param);
-                } else {
-                    previous[previous.indexOf('----merge-output-format') + 1] = param;
+                } else if (name === 'width' || name === 'height') {
+                    if (!previous.includes('--format')) {
+                        const format = (() => {
+                            let base = 'bestvideo[' + name + '=' + param + ']';
+                            if ((name === 'width' && !options['height']) || (name === 'height' && !options['width'])) {
+                                base += '+bestaudio';
+                            }
+                            return base;
+                        })();
+                        previous.push('--format');
+                        previous.push(format);
+                    } else {
+                        previous[previous.indexOf('--format') + 1] += '[' + name + '=' + param + ']+bestaudio';
+                    }
+                } else if (name === 'filename') {
+                    const output = '"' + param + '.%(ext)s"';
+                    if (!previous.includes('--output')) {
+                        previous.push('--output');
+                        previous.push(output);
+                    } else {
+                        previous[previous.indexOf('--output') + 1] = output;
+                    }
+                } else if (name === 'extension') {
+                    if (!previous.includes('--merge-output-format')) {
+                        previous.push('--merge-output-format');
+                        previous.push(param);
+                    } else {
+                        previous[previous.indexOf('----merge-output-format') + 1] = param;
+                    }
+                }
+            } else {
+                previous.push('--' + option.decode(name));
+                if (param !== noParamText) {
+                    previous.push(param);
                 }
             }
-        } else {
-            previous.push('--' + option.decode(name));
-            if (param !== noParamText) {
-                previous.push(param);
-            }
-        }
-        return previous;
-    }, []);
+            return previous;
+        }, []);
+
+    if (!optionData.includes('--ffmpeg-location')) {
+        optionData.push('--ffmpeg-location');
+        optionData.push(binaryPath.folder);
+    }
+
+    return optionData;
 }
 
 //yt-dlpのプロセスが終了（close）したときに呼び出しされる関数
