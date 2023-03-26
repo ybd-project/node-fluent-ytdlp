@@ -4,9 +4,6 @@
     "description": "yt-dlpをNode.jsで簡単に利用できるようにするAPI",
     "main": "lib/main.js",
     "types": "lib/main.d.ts",
-    "engines": {
-        "node": ">=19.7.0"
-    },
     "scripts": {
         "clean": "node ./script/clean.js",
         "build": "npm run clean && tsc",
