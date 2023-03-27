@@ -7,8 +7,8 @@
 このAPIは、[fluent-ffmpeg](https://www.npmjs.com/package/fluent-ffmpeg)を参考に作成されました。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/fluent-ytdlp.svg)](https://badge.fury.io/js/fluent-ytdlp)
-[![Monthly downloads](https://img.shields.io/npm/dt/fluent-ytdlp.svg)](https://www.npmjs.com/package/fluent-ytdlp)
+[![npm version](https://badge.fury.io/js/node-fluent-ytdlp.svg)](https://badge.fury.io/js/fluent-ytdlp)
+[![Monthly downloads](https://img.shields.io/npm/dt/node-fluent-ytdlp.svg)](https://www.npmjs.com/package/node-fluent-ytdlp)
 </div>
 
 ## 目次
@@ -86,12 +86,12 @@
 
 ### npmを使用する場合
 ```bash
-npm install fluent-ytdlp
+npm install node-fluent-ytdlp
 ```
 
 ### yarnを使用する場合
 ```bash
-yarn add fluent-ytdlp
+yarn add node-fluent-ytdlp
 ```
 
 ## 基本的な使用方法
@@ -114,13 +114,13 @@ yarn add fluent-ytdlp
 デバッグを有効にしない場合は、以下のコードを使用してください。
 
 ```js
-const fluentYTDlp = require('fluent-ytdlp'); //モジュールの読み込み
+const fluentYTDlp = require('node-fluent-ytdlp'); //モジュールの読み込み
 const ytdlp = new fluentYTDlp('URL'); //インスタンスの作成
 ```
 
 TypeScriptで使用する場合は、requireのコードをimportに変更するだけで対応できます。
 ```ts
-import fluentYTDlp from 'fluent-ytdlp'; //モジュールの読み込み
+import fluentYTDlp from 'node-fluent-ytdlp'; //モジュールの読み込み
 const ytdlp = new fluentYTDlp('URL'); //インスタンスの作成
 ```
 

@@ -2,8 +2,8 @@
 
 /* モジュールの読み込みとURLの指定 */
 
-const fluentYTDlp = require('fluent-ytdlp'); //JavaScript
-import fluentYTDlp from 'fluent-ytdlp'; //TypeScript
+const fluentYTDlp = require('node-fluent-ytdlp'); //JavaScript
+import fluentYTDlp from 'node-fluent-ytdlp'; //TypeScript
 
 const ytdlp = new fluentYTDlp('URL'); //インスタンス作成
 
