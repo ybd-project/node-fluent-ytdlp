@@ -2,6 +2,8 @@
  * Fluent-ytdlp - Copyright © 2023 YBD Project - MIT License
  */
 /// <reference types="node" />
+/// <reference types="node" />
+import { ChildProcessWithoutNullStreams, ChildProcess, ExecFileException, ExecException } from 'node:child_process';
 type YTDlpOptionsData = {
     [key: string]: string | number | boolean | RegExp | Date | object;
 };
@@ -25,18 +27,23 @@ type RunOptions = {
     force?: boolean;
     spawnOptions?: SpawnOptions;
 };
+type scheduleRunOptions = {
+    force?: boolean;
+    spawnOptions?: SpawnOptions;
+    schedule: string;
+};
 type NoStreamRunOptions = {
     type: 'exec' | 'execFile';
-    callback: any;
+    callback: (error: ExecFileException | ExecException | null, stdout: string, stderr: string) => void;
     force?: boolean;
 };
-import { ChildProcessWithoutNullStreams, ChildProcess } from 'node:child_process';
 declare class fluentYTDlp {
     private options;
     private wrongOption;
     private debug;
     constructor(url: string, debug?: boolean);
     run: (this: fluentYTDlp, runOptions?: RunOptions) => ChildProcessWithoutNullStreams;
+    scheduleRun: (this: fluentYTDlp, runOptions?: scheduleRunOptions) => Promise<ChildProcessWithoutNullStreams>;
     noStreamRun: (this: fluentYTDlp, runOptions?: NoStreamRunOptions) => ChildProcess;
     resolution: (this: fluentYTDlp, resolution: string) => fluentYTDlp;
     width: (this: fluentYTDlp, _width: string | number) => fluentYTDlp;

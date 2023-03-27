@@ -4,6 +4,12 @@
 
 'use strict';
 
+import {spawn, execFile, exec, ChildProcessWithoutNullStreams, ChildProcess, ExecFileException, ExecException} from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import Log from './functions/log';
+import option from './functions/option';
+
 type YTDlpOptionsData = {[key: string]: string | number | boolean | RegExp | Date | object};
 
 type SpawnOptions = {
@@ -28,17 +34,17 @@ type RunOptions = {
     spawnOptions?: SpawnOptions;
 };
 
-type NoStreamRunOptions = {
-    type: 'exec' | 'execFile';
-    callback: any;
+type scheduleRunOptions = {
     force?: boolean;
+    spawnOptions?: SpawnOptions;
+    schedule: string;
 };
 
-import {spawn, execFile, exec, ChildProcessWithoutNullStreams, ChildProcess} from 'node:child_process';
-import fs from 'node:fs';
-import path from 'node:path';
-import Log from './functions/log';
-import option from './functions/option';
+type NoStreamRunOptions = {
+    type: 'exec' | 'execFile';
+    callback: (error: ExecFileException | ExecException | null, stdout: string, stderr: string) => void;
+    force?: boolean;
+};
 
 const {binaryPath, os} = JSON.parse(fs.readFileSync(path.join(__dirname + '/../bin/info.json'), 'utf8')),
     noParamText = 'Option with no parameters.';
@@ -157,6 +163,30 @@ class fluentYTDlp {
         }
 
         return ytdlpProcess;
+    };
+    scheduleRun = function (this: fluentYTDlp, runOptions: scheduleRunOptions = {schedule: ''}): Promise<ChildProcessWithoutNullStreams> {
+        //scheduleRun()
+        const logger = new Log('ScheduleRun', this.debug),
+            options = generateOption({debug: this.debug, wrongOption: this.wrongOption, options: this.options}, runOptions),
+            waitTime = Math.floor(new Date(runOptions.schedule || '').getTime() - Date.now());
+
+        return new Promise((resolve, reject) => {
+            if (!runOptions.schedule || typeof runOptions.schedule !== 'string' || Math.sign(waitTime) === -1) {
+                reject('スケジュールの値がないか過去の時刻を指定している場合があります。');
+            } else {
+                setTimeout(() => {
+                    const ytdlpProcess = spawn(binaryPath.ytdlp, options, runOptions.spawnOptions || {shell: true});
+
+                    if (this.debug === true) {
+                        ytdlpProcess.on('close', childProcessCloseEvent);
+                    }
+
+                    logger.log('OK');
+
+                    resolve(ytdlpProcess);
+                }, waitTime);
+            }
+        });
     };
     noStreamRun = function (this: fluentYTDlp, runOptions: NoStreamRunOptions = {type: 'execFile', callback: function () {}, force: false}): ChildProcess {
         //noStreamRun()
