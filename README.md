@@ -7,7 +7,7 @@
 このAPIは、[fluent-ffmpeg](https://www.npmjs.com/package/fluent-ffmpeg)を参考に作成されました。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/node-fluent-ytdlp.svg)](https://badge.fury.io/js/fluent-ytdlp)
+[![npm version](https://badge.fury.io/js/node-fluent-ytdlp.svg)](https://badge.fury.io/js/node-fluent-ytdlp)
 [![Monthly downloads](https://img.shields.io/npm/dt/node-fluent-ytdlp.svg)](https://www.npmjs.com/package/node-fluent-ytdlp)
 </div>
 
