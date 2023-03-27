@@ -57,7 +57,6 @@ ytdlp
         schedule: '2024/1/1 00:00',
     })
     .then((ytdlpProcessScheduleRun) => {
-        ytdlpProcessScheduleRun;
         ytdlpProcessScheduleRun.stdout.setEncoding('utf8');
         ytdlpProcessScheduleRun.stdout.on('data', (stdout) => {
             /* yt-dlpの標準出力 */
