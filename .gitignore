@@ -1,0 +1,6 @@
+/temp
+/node_modules
+/.todo
+/bin
+/test
+/package-lock.json
