@@ -2639,7 +2639,7 @@ class fluentYTDlp {
     };
 }
 
-updateNotifier({pkg: {name: 'node-fluent-ytdlp', version: '1.0.0'}, updateCheckInterval: 1000}).notify({
+updateNotifier({pkg: {name: 'node-fluent-ytdlp', version: '1.2.1'}, updateCheckInterval: 1000}).notify({
     message:
         '更新情報: ' +
         chalk.yellow('{currentVersion}') +

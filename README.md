@@ -11,6 +11,11 @@
 [![Monthly downloads](https://img.shields.io/npm/dt/node-fluent-ytdlp.svg)](https://www.npmjs.com/package/node-fluent-ytdlp)
 </div>
 
+## インストールする際の注意点
+このAPIはインストールする際にyt-dlpやffmpegなどの必要なバイナリをダウンロードします。
+
+そのためインストール時に時間がかかる場合がありますがバグではありませんので終了するまでお待ちください。（ダウンロードにかかる時間はインターネットの速度によって異なります。）
+
 ## 目次
 - [説明・注意](#説明・注意)
     - [説明](#説明)
