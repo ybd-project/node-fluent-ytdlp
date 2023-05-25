@@ -42,6 +42,11 @@ declare class fluentYTDlp {
     private wrongOption;
     private debug;
     constructor(url: string, debug?: boolean);
+    setBinaryPath: ({ ytdlp, ffmpeg, ffprobe }: {
+        ytdlp?: string | undefined;
+        ffmpeg?: string | undefined;
+        ffprobe?: string | undefined;
+    }) => void;
     run: (this: fluentYTDlp, runOptions?: RunOptions) => ChildProcessWithoutNullStreams;
     scheduleRun: (this: fluentYTDlp, runOptions?: scheduleRunOptions) => Promise<ChildProcessWithoutNullStreams>;
     noStreamRun: (this: fluentYTDlp, runOptions?: NoStreamRunOptions) => ChildProcess;
