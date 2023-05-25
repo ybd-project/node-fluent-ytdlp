@@ -9,7 +9,7 @@
         "build": "npm run clean && tsc",
         "test": "tsc",
         "prepare": "npm run build",
-        "postinstall": "node ./lib/script/checkDownload.js && node ./lib/script/postinstall.js"
+        "postinstall": "node ./lib/script/postinstall.js"
     },
     "devDependencies": {
         "@tsconfig/node18": "^1.0.1",
