@@ -8,10 +8,12 @@ import {spawn, execFile, exec, ChildProcessWithoutNullStreams, ChildProcess, Exe
 import fs from 'node:fs';
 import path from 'node:path';
 import chalk from 'chalk';
+import arch from 'arch';
 import updateNotifier from 'update-notifier';
 import Log from './functions/log';
 import option from './functions/option';
 
+type Platform = 'windows' | 'linux' | 'macos';
 type YTDlpOptionsData = {[key: string]: string | number | boolean | RegExp | Date | object};
 
 type SpawnOptions = {
@@ -48,8 +50,66 @@ type NoStreamRunOptions = {
     force?: boolean;
 };
 
-const {binaryPath, os} = JSON.parse(fs.readFileSync(path.join(__dirname + '/../bin/info.json'), 'utf8')),
-    noParamText = 'Option with no parameters.';
+const noParamText = 'Option with no parameters.',
+    {binaryPath, os} = (() => {
+        try {
+            return JSON.parse(fs.readFileSync(path.join(__dirname + '/../bin/info.json'), 'utf8'));
+        } catch (err) {
+            console.log('[FLUENT-YTDLP]: yt-dlp等がダウンロードされた際に生成されるJSONファイルが読み込めないため、「setBinaryPath();」でパスを設定してください。');
+            return {
+                binaryPath: {
+                    ytdlp: '',
+                    ffmpeg: '',
+                    ffprobe: '',
+                    folder: '',
+                },
+                os: {
+                    platform: <Platform>(() => {
+                        //ここでwindows・linux・macosの三種類に分別する
+                        let platform: string = '';
+                        switch (process.platform) {
+                            case 'win32':
+                            case 'cygwin': {
+                                //Windows系OS
+                                platform = 'windows';
+                                break;
+                            }
+                            case 'linux':
+                            case 'aix':
+                            case 'freebsd':
+                            case 'haiku':
+                            case 'netbsd':
+                            case 'openbsd':
+                            case 'sunos': {
+                                //Linux系OS
+                                platform = 'linux';
+                                break;
+                            }
+                            case 'darwin': {
+                                //Mac系OS
+                                platform = 'macos';
+                                break;
+                            }
+                            case 'android': {
+                                //対象外のOS
+                                throw new Error(
+                                    'このOSは対象外です。\nWindows系、Linux系、Mac系に該当するOSの場合は「https://github.com/ybd-project/node-fluent-ytdlp」にIssuesを立ててください。',
+                                );
+                                break;
+                            }
+                            default: {
+                                //判定の対象外のOS
+                                platform = 'linux';
+                                break;
+                            }
+                        }
+                        return platform;
+                    })(),
+                    arch: arch(),
+                },
+            };
+        }
+    })();
 
 //yt-dlpのオプションを生成する
 function generateOption(
@@ -140,6 +200,7 @@ class fluentYTDlp {
     private options: YTDlpOptionsData = {};
     private wrongOption: Array<string> = [];
     private debug = false;
+
     constructor(url: string, debug: boolean = false) {
         //new FluentYTDlp('URL');
         this.debug = debug;
@@ -150,6 +211,22 @@ class fluentYTDlp {
         }
         this.options.url = url;
     }
+
+    /* yt-dlpなどのバイナリパスの設定 */
+    setBinaryPath = function ({ytdlp, ffmpeg, ffprobe}: {ytdlp?: string; ffmpeg?: string; ffprobe?: string}) {
+        if (ytdlp) {
+            binaryPath.ytdlp = ytdlp;
+            binaryPath.folder = path.dirname(ytdlp);
+        }
+        if (ffmpeg) {
+            binaryPath.ffmpeg = ffmpeg;
+            binaryPath.folder = path.dirname(ffmpeg);
+        }
+        if (ffprobe) {
+            binaryPath.ffprobe = ffprobe;
+            binaryPath.folder = path.dirname(ffprobe);
+        }
+    };
 
     /* yt-dlpの実行に関するオプション */
     run = function (this: fluentYTDlp, runOptions: RunOptions = {}): ChildProcessWithoutNullStreams {
@@ -2640,13 +2717,7 @@ class fluentYTDlp {
 }
 
 updateNotifier({pkg: {name: 'node-fluent-ytdlp', version: '1.2.1'}, updateCheckInterval: 1000}).notify({
-    message:
-        '更新情報: ' +
-        chalk.yellow('{currentVersion}') +
-        chalk.reset(' → ') +
-        chalk.green('{latestVersion}') +
-        '\n更新方法: ' +
-        chalk.cyan('{updateCommand}'),
+    message: '更新情報: ' + chalk.yellow('{currentVersion}') + chalk.reset(' → ') + chalk.green('{latestVersion}') + '\n更新方法: ' + chalk.cyan('{updateCommand}'),
     boxenOptions: {padding: 1, margin: 1, align: 'left', borderColor: 'blue', borderStyle: 'round', title: '更新に関する通知', titleAlignment: 'center'},
 });
 
