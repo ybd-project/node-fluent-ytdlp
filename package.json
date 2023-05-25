@@ -1,6 +1,6 @@
 {
     "name": "node-fluent-ytdlp",
-    "version": "1.3.1-beta.0",
+    "version": "1.3.0-beta.1",
     "description": "yt-dlpをNode.jsで簡単に利用できるようにするAPI",
     "main": "lib/main.js",
     "types": "lib/main.d.ts",
@@ -9,7 +9,7 @@
         "build": "npm run clean && tsc",
         "test": "tsc",
         "prepare": "npm run build",
-        "postinstall": "node ./lib/script/postinstall.js"
+        "postinstall": "node ./lib/script/checkDownload.js && node ./lib/script/postinstall.js"
     },
     "devDependencies": {
         "@tsconfig/node18": "^1.0.1",
@@ -26,7 +26,6 @@
         "arch": "^2.2.0",
         "chalk": "^4.1.2",
         "decompress": "^4.2.1",
-        "inquirer": "^8.0.0",
         "sync-fetch": "^0.4.2",
         "update-notifier": "^5.1.0"
     },
