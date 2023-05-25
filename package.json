@@ -1,6 +1,6 @@
 {
     "name": "node-fluent-ytdlp",
-    "version": "1.3.0-beta.4",
+    "version": "1.3.0",
     "description": "yt-dlpをNode.jsで簡単に利用できるようにするAPI",
     "main": "lib/main.js",
     "types": "lib/main.d.ts",
