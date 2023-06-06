@@ -4,10 +4,10 @@
 /// <reference types="node" />
 /// <reference types="node" />
 import { ChildProcessWithoutNullStreams, ChildProcess, ExecFileException, ExecException } from 'node:child_process';
-type YTDlpOptionsData = {
+declare type YTDlpOptionsData = {
     [key: string]: string | number | boolean | RegExp | Date | object;
 };
-type SpawnOptions = {
+declare type SpawnOptions = {
     cwd: string;
     env: any;
     argv0: string;
@@ -23,16 +23,16 @@ type SpawnOptions = {
     timeout: number;
     killSignal: any;
 };
-type RunOptions = {
+declare type RunOptions = {
     force?: boolean;
     spawnOptions?: SpawnOptions;
 };
-type scheduleRunOptions = {
+declare type scheduleRunOptions = {
     force?: boolean;
     spawnOptions?: SpawnOptions;
     schedule: string;
 };
-type NoStreamRunOptions = {
+declare type NoStreamRunOptions = {
     type: 'exec' | 'execFile';
     callback: (error: ExecFileException | ExecException | null, stdout: string, stderr: string) => void;
     force?: boolean;
@@ -244,7 +244,7 @@ declare class fluentYTDlp {
     checkAllFormats: (this: fluentYTDlp) => fluentYTDlp;
     noCheckFormats: (this: fluentYTDlp) => fluentYTDlp;
     listFormats: (this: fluentYTDlp) => fluentYTDlp;
-    mergeOutputFormat: (this: fluentYTDlp) => fluentYTDlp;
+    mergeOutputFormat: (this: fluentYTDlp, format: string) => fluentYTDlp;
     writeSubs: (this: fluentYTDlp) => fluentYTDlp;
     noWriteSubs: (this: fluentYTDlp) => fluentYTDlp;
     writeAutoSubs: (this: fluentYTDlp) => fluentYTDlp;
