@@ -1959,9 +1959,19 @@ class fluentYTDlp {
         this.options.listFormats = noParamText;
         return this;
     };
-    mergeOutputFormat = function (this: fluentYTDlp): fluentYTDlp {
+    mergeOutputFormat = function (this: fluentYTDlp, format: string): fluentYTDlp {
         //mergeOutputFormat()
-        this.options.mergeOutputFormat = noParamText;
+        const logger = new Log('MergeOutputFormat', this.debug);
+
+        //型がstringかをチェックする
+        if (typeof format !== 'string' || !format) {
+            logger.warning('[mergeOutputFormat]の引数の型が「String」ではない可能性があります。');
+            if (!this.wrongOption.includes('mergeOutputFormat')) {
+                this.wrongOption.push('mergeOutputFormat');
+            }
+        }
+        this.options.mergeOutputFormat = format;
+
         return this;
     };
 

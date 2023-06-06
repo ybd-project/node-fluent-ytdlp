@@ -2338,7 +2338,7 @@ ytdlp.listFormats().run();
 ---
 
 ### 動画のマージに使用するコンテナを指定する
-動画をマージする際に使用するコンテナを指定できます。現時点では、「avi・flv・mkv・mov・mp4・webm」がサポートされています。マージする必要がない場合は、無視されます。このオプションには、何かしらの値を指定する必要があります。
+動画をマージする際に使用するコンテナを指定できます。現時点では、「avi・flv・mkv・mov・mp4・webm」がサポートされています。マージする必要がない場合は無視されます。このオプションには、何かしらの値を指定する必要があります。
 
 **関数名**: `mergeOutputFormat()`
 
@@ -2347,7 +2347,7 @@ ytdlp.listFormats().run();
 **yt-dlpのオプション**: `--merge-output-format`
 
 ```js
-ytdlp.mergeOutputFormat().run();
+ytdlp.mergeOutputFormat('Format').run();
 ```
 
 ---
