@@ -14,7 +14,7 @@ import Log from './functions/log';
 import option from './functions/option';
 
 type Platform = 'windows' | 'linux' | 'macos';
-type YTDlpOptionsData = {[key: string]: string | number | boolean | RegExp | Date | object| null};
+type YTDlpOptionsData = {[key: string]: string | number | boolean | RegExp | Date | object | null};
 
 type SpawnOptions = {
     cwd: string;
@@ -92,9 +92,7 @@ const noParamText = 'Option with no parameter',
                             }
                             case 'android': {
                                 //対象外のOS
-                                throw new Error(
-                                    'このOSは対象外です。\nWindows系、Linux系、Mac系に該当するOSの場合は「https://github.com/ybd-project/node-fluent-ytdlp」にIssuesを立ててください。',
-                                );
+                                throw new Error('このOSは対象外です。\nWindows系、Linux系、Mac系に該当するOSの場合は「https://github.com/ybd-project/node-fluent-ytdlp」にIssuesを立ててください。');
                                 break;
                             }
                             default: {
@@ -112,10 +110,7 @@ const noParamText = 'Option with no parameter',
     })();
 
 //yt-dlpのオプションを生成する
-function generateOption(
-    {debug, wrongOption, options}: {debug: boolean; wrongOption: Array<string>; options: YTDlpOptionsData},
-    runOptions: RunOptions | NoStreamRunOptions,
-): Array<any> {
+function generateOption({debug, wrongOption, options}: {debug: boolean; wrongOption: Array<string>; options: YTDlpOptionsData}, runOptions: RunOptions | NoStreamRunOptions): Array<any> {
     const logger = new Log('generateOption', debug),
         exception = ['url', 'width', 'height', 'filename', 'extension'],
         optionData = Object.entries(options).reduce<any>((previous, [name, param]) => {
@@ -127,7 +122,9 @@ function generateOption(
                 logger.warning('[' + name + ']は間違った引数が指定されている可能性がありますが、設定により強制的に適応されます。');
             }
             if (exception.includes(name) && param !== null) {
-                if (name === 'width' || name === 'height') {
+                if (name === 'url') {
+                    previous.push(param);
+                } else if (name === 'width' || name === 'height') {
                     if (!previous.includes('--format')) {
                         const format = (() => {
                             let base = 'bestvideo[' + name + '=' + param + ']';
