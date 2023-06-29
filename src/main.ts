@@ -156,7 +156,7 @@ function generateOption({debug, wrongOption, options}: {debug: boolean; wrongOpt
                 }
             } else {
                 previous.push('--' + option.decode(name));
-                if (param !== noParamText || param !== null) {
+                if (param !== noParamText && param !== null) {
                     previous.push(param);
                 }
             }
@@ -226,6 +226,8 @@ class fluentYTDlp {
         const logger = new Log('Run', this.debug),
             options = generateOption({debug: this.debug, wrongOption: this.wrongOption, options: this.options}, runOptions),
             ytdlpProcess = spawn(binaryPath.ytdlp, options, runOptions.spawnOptions || {shell: true});
+
+        console.log(options);
 
         logger.log('OK');
 
