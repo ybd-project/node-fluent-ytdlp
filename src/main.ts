@@ -227,8 +227,6 @@ class fluentYTDlp {
             options = generateOption({debug: this.debug, wrongOption: this.wrongOption, options: this.options}, runOptions),
             ytdlpProcess = spawn(binaryPath.ytdlp, options, runOptions.spawnOptions || {shell: true});
 
-        console.log(options);
-
         logger.log('OK');
 
         if (this.debug === true) {
