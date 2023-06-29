@@ -14,7 +14,7 @@ import Log from './functions/log';
 import option from './functions/option';
 
 type Platform = 'windows' | 'linux' | 'macos';
-type YTDlpOptionsData = {[key: string]: string | number | boolean | RegExp | Date | object};
+type YTDlpOptionsData = {[key: string]: string | number | boolean | RegExp | Date | object| null};
 
 type SpawnOptions = {
     cwd: string;
@@ -50,7 +50,7 @@ type NoStreamRunOptions = {
     force?: boolean;
 };
 
-const noParamText = 'Option with no parameters.',
+const noParamText = 'Option with no parameter',
     {binaryPath, os} = (() => {
         try {
             return JSON.parse(fs.readFileSync(path.join(__dirname + '/../bin/info.json'), 'utf8'));
@@ -126,13 +126,8 @@ function generateOption(
                 }
                 logger.warning('[' + name + ']は間違った引数が指定されている可能性がありますが、設定により強制的に適応されます。');
             }
-            if (exception.includes(name)) {
-                if (name === 'url') {
-                    if (os.platform !== 'windows') {
-                        param = param.toString().replace('"', '');
-                    }
-                    previous.push(param);
-                } else if (name === 'width' || name === 'height') {
+            if (exception.includes(name) && param !== null) {
+                if (name === 'width' || name === 'height') {
                     if (!previous.includes('--format')) {
                         const format = (() => {
                             let base = 'bestvideo[' + name + '=' + param + ']';
@@ -164,7 +159,7 @@ function generateOption(
                 }
             } else {
                 previous.push('--' + option.decode(name));
-                if (param !== noParamText) {
+                if (param !== noParamText || param !== null) {
                     previous.push(param);
                 }
             }

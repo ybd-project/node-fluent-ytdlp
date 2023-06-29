@@ -5,7 +5,7 @@
 /// <reference types="node" />
 import { ChildProcessWithoutNullStreams, ChildProcess, ExecFileException, ExecException } from 'node:child_process';
 declare type YTDlpOptionsData = {
-    [key: string]: string | number | boolean | RegExp | Date | object;
+    [key: string]: string | number | boolean | RegExp | Date | object | null;
 };
 declare type SpawnOptions = {
     cwd: string;
