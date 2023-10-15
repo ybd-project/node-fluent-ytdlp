@@ -59,7 +59,7 @@ if (!process.env.FLUENT_YTDLP_NO_AUTO_DOWNLOAD) {
                         },
                         linux: {
                             x86: ytdlpDownloadUrl + '/yt-dlp',
-                            x64: ytdlpDownloadUrl + '/yt-dlp',
+                            x64: ytdlpDownloadUrl + '/yt-dlp_linux',
                         },
                         macos: {
                             x86: ytdlpDownloadUrl + '/yt-dlp_macos',
