@@ -7,9 +7,7 @@
 import {spawn, execFile, exec, ChildProcessWithoutNullStreams, ChildProcess, ExecFileException, ExecException} from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
-import chalk from 'chalk';
 import arch from 'arch';
-import updateNotifier from 'update-notifier';
 import Log from './functions/log';
 import option from './functions/option';
 
@@ -2717,10 +2715,5 @@ class fluentYTDlp {
         return this;
     };
 }
-
-updateNotifier({pkg: {name: 'node-fluent-ytdlp', version: '1.2.1'}, updateCheckInterval: 1000}).notify({
-    message: '更新情報: ' + chalk.yellow('{currentVersion}') + chalk.reset(' → ') + chalk.green('{latestVersion}') + '\n更新方法: ' + chalk.cyan('{updateCommand}'),
-    boxenOptions: {padding: 1, margin: 1, align: 'left', borderColor: 'blue', borderStyle: 'round', title: '更新に関する通知', titleAlignment: 'center'},
-});
 
 export = fluentYTDlp;

@@ -16,7 +16,6 @@
         "@types/decompress": "^4.2.4",
         "@types/inquirer": "^9.0.3",
         "@types/sync-fetch": "^0.4.0",
-        "@types/update-notifier": "^6.0.2",
         "ts-node": "^10.9.1",
         "tsc": "^2.0.0",
         "typescript": "^5.0.2"
@@ -24,10 +23,8 @@
     "dependencies": {
         "@types/watch": "^1.0.3",
         "arch": "^2.2.0",
-        "chalk": "^4.1.2",
         "decompress": "^4.2.1",
-        "sync-fetch": "^0.4.2",
-        "update-notifier": "^5.1.0"
+        "sync-fetch": "^0.4.2"
     },
     "repository": {
         "type": "git",
